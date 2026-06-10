@@ -1,607 +1,1591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소사벌연구TF 코칭 시스템</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter & Noto Sans KR) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f4f6fa',
+                            100: '#e9ecf3',
+                            500: '#3a506b',
+                            600: '#1c2541',
+                            700: '#0b132b',
+                            900: '#020c1b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4s); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--pu50:#EEEDFE;--pu100:#CECBF6;--pu200:#AFA9EC;--pu400:#7F77DD;--pu600:#534AB7;--pu800:#3C3489;--tl50:#E1F5EE;--tl100:#9FE1CB;--tl600:#0F6E56;--tl800:#085041;--co50:#FAECE7;--co100:#F5C4B3;--co600:#993C1D;--am50:#FAEEDA;--am600:#854F0B;--gr50:#F1EFE8;--gr600:#5F5E5A}
-body{font-family:var(--font-sans);color:var(--color-text-primary);font-size:14px}
-.hero{background:var(--pu50);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;border:0.5px solid var(--pu100);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.hero-left h1{font-size:18px;font-weight:500;color:var(--pu800)}
-.hero-left p{font-size:12px;color:var(--pu600);margin-top:2px}
-.hero-stats{display:flex;gap:8px}
-.hstat{background:var(--color-background-primary);border-radius:var(--border-radius-md);padding:8px 14px;border:0.5px solid var(--pu100);text-align:center}
-.hstat-n{font-size:18px;font-weight:500;color:var(--pu600)}
-.hstat-l{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
-.tabs{display:flex;gap:0;margin-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)}
-.tab{padding:0.55rem 1.1rem;font-size:13px;cursor:pointer;border:none;background:none;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-1px;font-family:var(--font-sans);display:flex;align-items:center;gap:5px}
-.tab.active{color:var(--pu600);border-bottom-color:var(--pu600);font-weight:500}
-.tab:hover:not(.active){color:var(--color-text-primary)}
-.sec{display:none}
-.sec.active{display:block}
-.card{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);padding:1.25rem;margin-bottom:1rem}
-.card-title{font-size:15px;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:7px;color:var(--color-text-primary)}
-.fg{display:flex;flex-direction:column;gap:5px}
-.fg label{font-size:12px;color:var(--color-text-secondary);font-weight:500}
-.fg input,.fg select{font-family:var(--font-sans);font-size:13px}
-.btn{padding:7px 14px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-family:var(--font-sans);color:var(--color-text-primary);display:inline-flex;align-items:center;gap:5px}
-.btn:hover{background:var(--color-background-secondary)}
-.btn.primary{background:var(--pu600);color:#fff;border-color:var(--pu600)}
-.btn.primary:hover{background:var(--pu800)}
-.btn.danger{background:var(--co50);color:var(--co600);border-color:var(--co100)}
-.btn.danger:hover{background:var(--co100)}
-.btn.teal{background:var(--tl50);color:var(--tl600);border-color:var(--tl100)}
-.btn.teal:hover{background:var(--tl100)}
-.members-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-.member-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
-.member-info{flex:1}
-.member-name{font-size:13px;font-weight:500}
-.member-count{font-size:11px;padding:2px 7px;border-radius:999px}
-.cal-wrap{overflow-x:auto}
-.cal-table{border-collapse:collapse;width:100%;table-layout:fixed;min-width:480px}
-.cal-table th{font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:6px 4px;text-align:center;border-bottom:0.5px solid var(--color-border-tertiary)}
-.cal-table td{border:0.5px solid var(--color-border-tertiary);padding:2px;vertical-align:top}
-.cal-table .time-col{font-size:11px;color:var(--color-text-secondary);text-align:right;padding:4px 6px 4px 2px;background:var(--color-background-secondary);width:52px}
-.slot-cell{min-height:36px;cursor:pointer;transition:background 0.1s}
-.slot-cell:hover{background:var(--pu50)}
-.slot-cell.drop-over{background:var(--pu100)}
-.booking-chip{border-radius:var(--border-radius-md);padding:3px 5px;font-size:11px;font-weight:500;cursor:grab;user-select:none;display:flex;align-items:center;gap:3px;margin:1px;line-height:1.3}
-.booking-chip:active{cursor:grabbing;opacity:0.7}
-.booking-chip .chip-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
-.booking-chip .chip-del{margin-left:auto;cursor:pointer;opacity:0.6;flex-shrink:0;font-size:10px}
-.booking-chip .chip-del:hover{opacity:1}
-.week-nav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.week-nav span{font-size:13px;font-weight:500;flex:1;text-align:center}
-.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)}
-.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.sched-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-.sched-table th{background:var(--color-background-secondary);padding:8px 10px;text-align:left;font-weight:500;font-size:11px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
-.sched-table td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font-size:11px;font-weight:500}
-.toast{position:absolute;bottom:1rem;right:1rem;padding:10px 16px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.25s;pointer-events:none}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.success{background:var(--tl800);color:var(--tl100)}
-.toast.error{background:#712B13;color:var(--co100)}
-.add-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
-.add-row .fg{flex:1;min-width:120px}
-.pw-gate{padding:2rem;text-align:center}
-.pw-gate p{font-size:13px;color:var(--color-text-secondary);margin-bottom:12px}
-.pw-gate input{width:200px;font-family:var(--font-sans);font-size:13px;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);display:block;margin:0 auto 10px}
-.slot-btn{padding:10px 4px;text-align:center;border-radius:var(--border-radius-md);border:0.5px solid var(--pu200);background:var(--pu50);cursor:pointer;font-size:12px;color:var(--pu800);font-weight:500;transition:all 0.1s;line-height:1.4}
-.slot-btn.selected{background:var(--pu600);color:#fff;border-color:var(--pu600)}
-.slot-btn.booked{background:var(--co50);color:var(--co600);border-color:var(--co100);cursor:not-allowed;font-weight:400}
-.slot-btn.disabled-day{background:var(--gr50);color:var(--gr600);border-color:var(--color-border-tertiary);cursor:not-allowed;opacity:0.6}
-</style>
+    <!-- 네비게이션 헤더 -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- 로고 영역 -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('scheduler')">
+                    <div class="w-10 h-10 bg-gradient-to-tr from-brand-600 to-brand-500 rounded-xl flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-black tracking-tight bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent">소사벌연구TF 코칭</span>
+                    </div>
+                </div>
 
-<h2 class="sr-only">컨설팅 일정 예약 및 관리 시스템</h2>
-
-<div class="hero">
-  <div class="hero-left">
-    <h1><i class="ti ti-calendar" aria-hidden="true"></i> 1:1 컨설팅 일정 관리</h1>
-    <p>2025.06.10 ~ 07.10 &nbsp;·&nbsp; 14:00 – 16:30 &nbsp;·&nbsp; 30분/회 &nbsp;·&nbsp; 하루 1타임</p>
-  </div>
-  <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n" id="st-total">0</div><div class="hstat-l">총 예약</div></div>
-    <div class="hstat"><div class="hstat-n" id="st-members">0</div><div class="hstat-l">대상 인원</div></div>
-    <div class="hstat"><div class="hstat-n" id="st-remain">0</div><div class="hstat-l">남은 슬롯</div></div>
-  </div>
-</div>
-
-<div class="tabs">
-  <button class="tab active" id="tab-btn-book" onclick="switchTab('book')"><i class="ti ti-edit" style="font-size:13px" aria-hidden="true"></i> 예약 신청</button>
-  <button class="tab" id="tab-btn-cal" onclick="switchTab('cal')"><i class="ti ti-calendar-event" style="font-size:13px" aria-hidden="true"></i> 캘린더 편집</button>
-  <button class="tab" id="tab-btn-list" onclick="switchTab('list')"><i class="ti ti-list" style="font-size:13px" aria-hidden="true"></i> 예약 목록</button>
-  <button class="tab" id="tab-btn-admin" onclick="switchTab('admin')"><i class="ti ti-settings" style="font-size:13px" aria-hidden="true"></i> 관리자</button>
-</div>
-
-<div id="sec-book" class="sec active">
-  <div class="card">
-    <div class="card-title"><i class="ti ti-user-check" style="color:var(--pu600)" aria-hidden="true"></i> 예약자 선택</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div class="fg">
-        <label>컨설팅 대상자 *</label>
-        <select id="b-member" onchange="onMemberChange()">
-          <option value="">-- 대상자를 선택하세요 --</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label>최대 예약 횟수</label>
-        <div id="b-max-display" style="padding:7px 10px;font-size:13px;color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-secondary)">대상자 선택 후 표시</div>
-      </div>
-    </div>
-    <div id="b-member-info" style="display:none;margin-top:10px;padding:8px 12px;background:var(--pu50);border-radius:var(--border-radius-md);font-size:12px;color:var(--pu800)"></div>
-  </div>
-  <div class="card">
-    <div class="card-title"><i class="ti ti-clock" style="color:var(--pu600)" aria-hidden="true"></i> 날짜 및 시간 선택 <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);margin-left:4px">· 날짜마다 1타임씩 선택</span></div>
-    <div class="fg" style="margin-bottom:12px">
-      <label>날짜 선택</label>
-      <select id="b-date" onchange="renderBookSlots()">
-        <option value="">-- 날짜 선택 --</option>
-      </select>
-    </div>
-    <div id="book-slots-wrap">
-      <div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:1.5rem">날짜를 먼저 선택해주세요</div>
-    </div>
-    <div id="selected-summary" style="display:none;margin-top:10px;padding:8px 12px;background:var(--tl50);border-radius:var(--border-radius-md);font-size:12px;color:var(--tl800)"></div>
-    <div style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap">
-      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)"><span style="width:10px;height:10px;border-radius:3px;background:var(--pu50);border:0.5px solid var(--pu200);display:inline-block"></span> 신청 가능</span>
-      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)"><span style="width:10px;height:10px;border-radius:3px;background:var(--pu600);display:inline-block"></span> 선택됨</span>
-      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)"><span style="width:10px;height:10px;border-radius:3px;background:var(--co50);border:0.5px solid var(--co100);display:inline-block"></span> 마감</span>
-      <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)"><span style="width:10px;height:10px;border-radius:3px;background:var(--gr50);border:0.5px solid var(--color-border-tertiary);display:inline-block"></span> 이미 예약한 날</span>
-    </div>
-  </div>
-  <button class="btn primary" style="width:100%;justify-content:center;padding:10px" onclick="submitBooking()">
-    <i class="ti ti-check" aria-hidden="true"></i> 예약 확정
-  </button>
-</div>
-
-<div id="sec-cal" class="sec">
-  <div class="card">
-    <div class="card-title"><i class="ti ti-drag-drop" style="color:var(--pu600)" aria-hidden="true"></i> 드래그로 이동 · 빈 셀 클릭으로 추가</div>
-    <div class="week-nav">
-      <button class="btn" onclick="prevWeek()"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
-      <span id="week-label"></span>
-      <button class="btn" onclick="nextWeek()"><i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-    </div>
-    <div class="legend" id="cal-legend"></div>
-    <div class="cal-wrap">
-      <table class="cal-table" id="cal-table"></table>
-    </div>
-    <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">
-      <i class="ti ti-info-circle" style="font-size:12px" aria-hidden="true"></i> 칩을 다른 셀로 드래그하여 이동 · × 버튼으로 삭제 · 빈 셀 클릭으로 새 예약 추가
-    </div>
-  </div>
-</div>
-
-<div id="sec-list" class="sec">
-  <div class="card">
-    <div class="card-title"><i class="ti ti-table" style="color:var(--pu600)" aria-hidden="true"></i> 전체 예약 현황</div>
-    <div id="list-content">
-      <div style="text-align:center;padding:2rem;color:var(--color-text-secondary);font-size:13px">예약 내역이 없습니다</div>
-    </div>
-  </div>
-</div>
-
-<div id="sec-admin" class="sec">
-  <div id="admin-gate" class="card">
-    <div class="pw-gate">
-      <i class="ti ti-lock" style="font-size:28px;color:var(--pu400);display:block;margin-bottom:8px" aria-hidden="true"></i>
-      <p>관리자 비밀번호를 입력하세요</p>
-      <input type="password" id="pw-input" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPw()">
-      <button class="btn primary" onclick="checkPw()">확인</button>
-      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:8px">기본 비밀번호: admin1234</div>
-    </div>
-  </div>
-  <div id="admin-panel" style="display:none">
-    <div class="card">
-      <div class="card-title"><i class="ti ti-users" style="color:var(--pu600)" aria-hidden="true"></i> 컨설팅 대상자 관리</div>
-      <div class="add-row">
-        <div class="fg"><label>이름 *</label><input type="text" id="nm-name" placeholder="홍길동"></div>
-        <div class="fg" style="max-width:120px"><label>최대 횟수</label>
-          <select id="nm-max">
-            <option value="1">1회</option>
-            <option value="2" selected>2회</option>
-            <option value="3">3회</option>
-          </select>
+                <!-- 네비게이션 메뉴 (탭 전환) -->
+                <nav class="flex items-center space-x-1 sm:space-x-2">
+                    <button id="nav-scheduler-btn" onclick="switchTab('scheduler')" class="px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm transition-all flex items-center space-x-1.5 bg-brand-100 text-brand-600">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>코칭 예약</span>
+                    </button>
+                    <button id="nav-gallery-btn" onclick="switchTab('gallery')" class="px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center space-x-1.5">
+                        <i class="fa-regular fa-image"></i>
+                        <span>현장 공유</span>
+                    </button>
+                    <button id="nav-admin-btn" onclick="switchTab('admin')" class="px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center space-x-1.5">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <span>관리자 도구</span>
+                    </button>
+                </nav>
+            </div>
         </div>
-        <div class="fg" style="justify-content:flex-end">
-          <button class="btn primary" onclick="addMember()"><i class="ti ti-plus" aria-hidden="true"></i> 추가</button>
+    </header>
+
+    <!-- 메인 컨텐츠 컨테이너 -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ==============================================
+             1. 스마트 코칭 예약 스케줄러 
+             ============================================== -->
+        <section id="section-scheduler" class="space-y-8 animate-fade-in">
+            <!-- 코칭 대상자 현황 칩스 -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                    <h2 class="text-xs font-black text-slate-400 tracking-wider uppercase">코칭 대상자 목록 및 예약 횟수 현황 (인당 2~3회 기준)</h2>
+                    <span class="text-[10px] text-brand-500 font-bold bg-brand-50 px-2 py-0.5 rounded-full">실시간</span>
+                </div>
+                <div id="participant-badges-container" class="flex flex-wrap gap-2 text-xs">
+                    <!-- JS로 바인딩 -->
+                </div>
+            </div>
+
+            <!-- 스케줄러 그리드 (달력 + 슬롯 확인 및 폼) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- [좌측: 7열] 캘린더 뷰 -->
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                    <div class="flex justify-between items-center pb-2">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 flex items-center space-x-1.5">
+                                <i class="fa-regular fa-calendar-days text-brand-600"></i>
+                                <span id="calendar-month-year">2026년 6월</span>
+                            </h2>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            <button onclick="setToCurrentMonth()" class="px-2.5 py-1 text-xs hover:bg-slate-100 rounded-lg text-slate-600 transition-colors font-semibold">오늘</button>
+                            <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 요일 헤더 -->
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold text-slate-400 py-1.5 border-y border-slate-100">
+                        <div class="text-red-500">일</div>
+                        <div>월</div>
+                        <div>화</div>
+                        <div>수</div>
+                        <div>목</div>
+                        <div>금</div>
+                        <div class="text-blue-500">토</div>
+                    </div>
+
+                    <!-- 일 그리드 -->
+                    <div id="calendar-days-grid" class="grid grid-cols-7 gap-1.5 text-center text-sm font-medium">
+                        <!-- JS에서 동적 렌더링 -->
+                    </div>
+
+                    <!-- 범례 -->
+                    <div class="flex items-center justify-end space-x-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500">
+                        <div class="flex items-center space-x-1">
+                            <span class="w-2.5 h-2.5 bg-red-50 border border-red-200 rounded-sm"></span>
+                            <span>예약 차단/금지일</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <span class="w-2.5 h-2.5 bg-brand-100 border border-brand-200 rounded-sm"></span>
+                            <span>선택한 날짜</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <span class="w-1.5 h-1.5 bg-brand-500 rounded-full inline-block"></span>
+                            <span>예약 있음</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [우측: 5열] 슬롯 현황 및 초간단 예약 폼 -->
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    
+                    <!-- 타임슬롯 매트릭스 (14:00~16:30, 30분 단위) -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <div>
+                                <span id="selected-date-label" class="text-sm font-extrabold text-brand-600">2026-06-10</span>
+                                <span class="text-sm font-bold text-slate-800"> 시간 슬롯 선택</span>
+                            </div>
+                            <span class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-md">회당 30분</span>
+                        </div>
+                        
+                        <!-- 슬롯 리스트 -->
+                        <div id="daily-slots-container" class="space-y-2">
+                            <!-- JS에 의해 동적으로 채워짐 -->
+                        </div>
+                    </div>
+
+                    <!-- 코칭 신규 예약 폼 (주제 제거, 이메일 제거) -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-800 flex items-center space-x-1.5">
+                            <i class="fa-regular fa-square-check text-brand-500"></i>
+                            <span>코칭 예약 정보 입력</span>
+                        </h3>
+                        
+                        <form id="booking-form" onsubmit="handleNewBooking(event)" class="space-y-3.5 text-xs">
+                            <!-- 코칭 대상자 선택 -->
+                            <div>
+                                <label for="book-participant" class="block text-slate-500 font-bold mb-1">코칭 대상자 <span class="text-red-500">*</span></label>
+                                <select id="book-participant" required onchange="handleParticipantChange()"
+                                    class="block w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all cursor-pointer font-medium">
+                                    <option value="" disabled selected>코칭 받을 대상자를 선택하세요.</option>
+                                    <!-- 바인딩 -->
+                                </select>
+                            </div>
+
+                            <!-- 선택 확인 필드 (날짜, 시간) -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-slate-500 font-bold mb-1">예약 날짜</label>
+                                    <input type="text" id="book-date-display" readonly 
+                                        class="block w-full px-3 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-500 font-bold mb-1">예약 시간</label>
+                                    <input type="text" id="book-time-display" readonly placeholder="시간 선택 필수"
+                                        class="block w-full px-3 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none">
+                                </div>
+                            </div>
+
+                            <!-- 횟수 초과 권고 경고 안내 -->
+                            <div id="booking-limit-warning" class="hidden bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-[11px] leading-relaxed font-semibold">
+                                <i class="fa-solid fa-circle-info mr-1"></i>
+                                이 대상자는 이미 목표 코칭 횟수(3회)를 충족했습니다. 일정을 추가로 지정할 경우 관리 차수 조율을 재검토 바랍니다.
+                            </div>
+
+                            <!-- 제출 단추 -->
+                            <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 text-white font-bold py-3 rounded-xl shadow-md transition-all flex items-center justify-center space-x-1.5 text-xs">
+                                <i class="fa-regular fa-calendar-plus"></i>
+                                <span>예약 확정 및 일정표 반영</span>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- 종합 예약 일정표 현황 -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-list-check text-brand-600"></i>
+                            <span>확정된 코칭 종합 일정표</span>
+                        </h3>
+                    </div>
+                    <!-- 필터 검색 -->
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="booking-search" oninput="renderBookingTable()" placeholder="대상자 이름 검색..." 
+                            class="block w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 transition-all">
+                        <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 일정표 테이블 -->
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="min-w-full divide-y divide-slate-100">
+                        <thead class="bg-slate-50 text-[11px] font-bold text-slate-400 tracking-wider">
+                            <tr>
+                                <th class="px-6 py-3.5 text-left">코칭 순서</th>
+                                <th class="px-6 py-3.5 text-left">코칭 대상자</th>
+                                <th class="px-6 py-3.5 text-left">코칭 날짜</th>
+                                <th class="px-6 py-3.5 text-left">코칭 시간대</th>
+                                <th class="px-6 py-3.5 text-right">예약 편집 및 제어</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booking-table-rows" class="divide-y divide-slate-100 text-xs text-slate-700">
+                            <!-- JS를 통해 렌더링 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 내역 없을 때 피드백 -->
+                <div id="no-booking-feedback" class="hidden p-10 text-center text-slate-400">
+                    <i class="fa-regular fa-calendar-minus text-2xl block mb-2"></i>
+                    <span>등록된 예약 일정이 존재하지 않습니다.</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==============================================
+             2. 현장 공유 갤러리 
+             ============================================== -->
+        <section id="section-gallery" class="hidden space-y-8 animate-fade-in">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">코칭 현장 공유</h1>
+                    <p class="text-slate-500 text-xs mt-1">소사벌연구TF 코칭 과정의 기록, 화이트보드 정리 이미지 등을 함께 공유합니다.</p>
+                </div>
+                <button onclick="togglePhotoUploadForm()" class="w-full sm:w-auto px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center space-x-1.5 shadow-sm">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span>코칭 현장 업로드</span>
+                </button>
+            </div>
+
+            <!-- 사진 등록 드롭다운 양식 (기본 숨김) -->
+            <div id="photo-upload-container" class="hidden max-w-xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-lg p-6 space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-sm text-slate-900">현장 기록 업로드</h3>
+                    <button onclick="togglePhotoUploadForm()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <form id="photo-form" onsubmit="handlePhotoSubmit(event)" class="space-y-4 text-xs">
+                    <!-- 드래그 앤 드롭 파일 탐재 영역 -->
+                    <div>
+                        <label class="block text-slate-500 font-bold mb-1">현장 사진 첨부 <span class="text-red-500">*</span></label>
+                        <div id="drop-zone" class="border-2 border-dashed border-slate-200 hover:border-brand-500 rounded-xl p-6 text-center cursor-pointer transition-colors bg-slate-50">
+                            <input type="file" id="photo-file" accept="image/*" class="hidden" onchange="previewSelectedPhoto(event)">
+                            <div id="drop-zone-prompt" class="space-y-2">
+                                <i class="fa-regular fa-images text-slate-400 text-3xl"></i>
+                                <p class="text-slate-600 font-medium">이곳을 클릭하거나 이미지 파일을 드래그앤드롭 하세요</p>
+                            </div>
+                            <!-- 이미지 미리보기 -->
+                            <div id="photo-preview-container" class="hidden relative max-w-xs mx-auto">
+                                <img id="photo-preview-img" src="" class="rounded-lg max-h-40 mx-auto object-cover">
+                                <button type="button" onclick="cancelPhotoPreview(event)" class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center shadow">
+                                    <i class="fa-solid fa-xmark text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- 작성자 (대상자) -->
+                        <div>
+                            <label for="photo-author" class="block text-slate-500 font-bold mb-1">업로더</label>
+                            <select id="photo-author" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold">
+                                <option value="코치(관리자)" selected>코치(관리자)</option>
+                                <!-- JS에서 동적 충전 -->
+                            </select>
+                        </div>
+                        <!-- 타이틀 -->
+                        <div>
+                            <label for="photo-title" class="block text-slate-500 font-bold mb-1">기록 제목 <span class="text-red-500">*</span></label>
+                            <input type="text" id="photo-title" required placeholder="예: 1회차 핵심 논의 정리" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                        </div>
+                    </div>
+
+                    <!-- 내용 -->
+                    <div>
+                        <label for="photo-desc" class="block text-slate-500 font-bold mb-1">상세 기록 코멘트</label>
+                        <textarea id="photo-desc" rows="3" placeholder="화이트보드 키워드 및 코칭 전반 핵심 피드백 요약을 적으세요." class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg resize-none text-xs"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-lg shadow transition-colors">공유 벽면에 등록</button>
+                </form>
+            </div>
+
+            <!-- 갤러리 메인 월 그리드 -->
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS에서 동적 바인딩 -->
+            </div>
+
+            <!-- 사진 없을 때 피드백 -->
+            <div id="no-photo-feedback" class="hidden p-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <i class="fa-regular fa-image text-3xl block mb-2"></i>
+                <span class="font-medium text-slate-600 block">업로드된 소사벌연구TF 코칭 기록이 아직 없습니다.</span>
+            </div>
+        </section>
+
+        <!-- ==============================================
+             3. 관리자 도구 (회원 관리, 비밀번호 권한, 예외 차단 일자 지정)
+             ============================================== -->
+        <section id="section-admin" class="hidden space-y-6 animate-fade-in">
+            <div class="border-b border-slate-200 pb-4">
+                <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">관리자 제어 센터</h1>
+                <p class="text-slate-500 text-xs mt-1">예약 금지 날짜 지정, 코칭 회원 편집 및 관리자 암호 유지를 제어합니다.</p>
+            </div>
+
+            <!-- 관리자 로그인 인증 영역 -->
+            <div id="admin-auth-panel" class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm text-center max-w-md mx-auto space-y-4">
+                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-brand-600">
+                    <i class="fa-solid fa-lock text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-slate-900">관리자 인증이 필요합니다</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">관리자 비밀번호를 입력해 제어 권한을 획득하십시오. (초기값: 1234)</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="password" id="admin-auth-pass" placeholder="비밀번호 입력" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs focus:bg-white outline-none">
+                    <button onclick="handleAdminLogin()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-colors">인증</button>
+                </div>
+            </div>
+
+            <!-- 인증 완료 후 개방될 관리 패널 -->
+            <div id="admin-controls-dashboard" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- [좌측: 4열] 비밀번호 변경 및 예외 차단 날짜 추가 -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    
+                    <!-- 비밀번호 관리 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3.5">
+                        <h4 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5 pb-2 border-b border-slate-100">
+                            <i class="fa-solid fa-key text-brand-500"></i>
+                            <span>관리자 비밀번호 변경</span>
+                        </h4>
+                        <div class="space-y-2 text-xs">
+                            <div>
+                                <label class="block text-slate-400 font-bold mb-1">새 비밀번호</label>
+                                <input type="password" id="new-admin-pw" placeholder="새로운 비밀번호" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none">
+                            </div>
+                            <button onclick="changeAdminPassword()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded-lg text-[11px] transition-colors">
+                                비밀번호 변경 적용
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 예약 불가(차단) 날짜 목록 및 지정 -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+                        <h4 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5 pb-2 border-b border-slate-100">
+                            <i class="fa-solid fa-calendar-minus text-red-500"></i>
+                            <span>코칭 예약 금지(차단) 날짜 제어</span>
+                        </h4>
+                        <div class="space-y-3 text-xs">
+                            <div class="flex items-center space-x-2">
+                                <input type="date" id="block-date-input" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none">
+                                <button onclick="addBlockedDate()" class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors whitespace-nowrap">
+                                    날짜 차단
+                                </button>
+                            </div>
+                            <!-- 차단된 날짜 리스트 -->
+                            <div class="space-y-1">
+                                <label class="block text-slate-400 font-bold">현재 예약 차단된 일자</label>
+                                <div id="blocked-dates-list" class="space-y-1.5 max-h-40 overflow-y-auto custom-scrollbar pt-1">
+                                    <!-- JS 연동 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [우측: 8열] 코칭 회원 관리 패널 (추가, 이름 편집, 영구 탈퇴) -->
+                <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h4 class="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-users text-brand-500"></i>
+                            <span>코칭 대상 회원 관리</span>
+                        </h4>
+                        <span class="text-[10px] text-slate-400" id="total-member-count">총 11명 등록됨</span>
+                    </div>
+
+                    <!-- 신규 회원 가입 추가 -->
+                    <div class="flex gap-2 text-xs">
+                        <input type="text" id="new-member-name" placeholder="새 코칭 참가자 성명" class="block w-full sm:w-64 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none">
+                        <button onclick="addNewMember()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg transition-all flex items-center space-x-1.5">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>참가자 등록</span>
+                        </button>
+                    </div>
+
+                    <!-- 회원 목록 테이블 -->
+                    <div class="overflow-x-auto custom-scrollbar border border-slate-100 rounded-xl">
+                        <table class="min-w-full divide-y divide-slate-100 text-xs">
+                            <thead class="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-4 py-3 text-left">참가자명</th>
+                                    <th class="px-4 py-3 text-left">현재 예약 수</th>
+                                    <th class="px-4 py-3 text-right">관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-member-rows" class="divide-y divide-slate-100 text-slate-700">
+                                <!-- JS 동적 마운팅 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==============================================
+         4. 공통 팝업 및 모달 모음 
+         ============================================== -->
+
+    <!-- 예약 취소/편집을 위한 팝업 관리기 -->
+    <div id="confirmModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 text-center space-y-4">
+            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-regular fa-calendar-minus"></i>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">코칭 예약을 취소하시겠습니까?</h4>
+                <p class="text-xs text-slate-500 mt-1">확인을 위해 관리자 비밀번호를 입력해주세요.</p>
+            </div>
+            <input type="password" id="cancel-auth-pw" placeholder="관리자 비밀번호" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs outline-none">
+            <div class="flex justify-center space-x-2 pt-1">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-all">그냥두기</button>
+                <button id="confirm-delete-btn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-md transition-all">예약 해제</button>
+            </div>
         </div>
-      </div>
-      <div class="members-list" id="members-list">
-        <div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:1rem">등록된 대상자가 없습니다</div>
-      </div>
     </div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-key" style="color:var(--pu600)" aria-hidden="true"></i> 비밀번호 변경</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
-        <div class="fg" style="flex:1;min-width:140px"><label>새 비밀번호</label><input type="password" id="new-pw" placeholder="새 비밀번호"></div>
-        <div class="fg" style="flex:1;min-width:140px"><label>확인</label><input type="password" id="new-pw2" placeholder="비밀번호 확인"></div>
-        <button class="btn teal" onclick="changePw()"><i class="ti ti-device-floppy" aria-hidden="true"></i> 변경</button>
-      </div>
+
+    <!-- 갤러리 코멘트 편집 모달 -->
+    <div id="editGalleryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                <h4 class="text-sm font-black text-slate-800">코칭 현장 기록 편집</h4>
+                <button onclick="closeEditGalleryModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-500 font-bold mb-1">제목</label>
+                    <input type="text" id="edit-photo-title" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-slate-500 font-bold mb-1">상세 내용 및 코멘트</label>
+                    <textarea id="edit-photo-desc" rows="3" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-red-500 font-bold mb-1">편집 검증 암호</label>
+                    <input type="password" id="edit-photo-auth" placeholder="관리자 비밀번호" class="block w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeEditGalleryModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-all">취소</button>
+                <button id="confirm-photo-edit-btn" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-xs font-bold transition-all">수정 사항 반영</button>
+            </div>
+        </div>
     </div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-trash" style="color:#A32D2D" aria-hidden="true"></i> 데이터 관리</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn danger" onclick="clearAllBookings()"><i class="ti ti-trash" aria-hidden="true"></i> 전체 예약 삭제</button>
-        <button class="btn danger" onclick="clearAllMembers()"><i class="ti ti-user-x" aria-hidden="true"></i> 전체 대상자 삭제</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div id="toast" class="toast"></div>
+    <!-- 토스트 알림 컨테이너 -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2"></div>
 
-<div id="quick-modal" style="display:none;position:absolute;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:14px;z-index:50;min-width:210px">
-  <div style="font-size:13px;font-weight:500;margin-bottom:10px;color:var(--color-text-primary)" id="qm-title">새 예약 추가</div>
-  <div class="fg" style="margin-bottom:10px"><label>대상자</label><select id="qm-member"></select></div>
-  <div style="display:flex;gap:6px">
-    <button class="btn primary" style="flex:1;justify-content:center" onclick="confirmQuick()">추가</button>
-    <button class="btn" onclick="closeQuick()">취소</button>
-  </div>
-</div>
+    <!-- 푸터 -->
+    <footer class="bg-slate-900 text-slate-500 text-[10px] py-6 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="font-bold text-slate-400 text-xs">소사벌연구TF 코칭 전용 스케줄러</p>
+            </div>
+            <div>
+                <p>&copy; 2026 소사벌연구TF 코칭. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-<script>
-const TIME_SLOTS=['14:00','14:30','15:00','15:30','16:00'];
-const SLOT_END={'14:00':'14:30','14:30':'15:00','15:00':'15:30','15:30':'16:00','16:00':'16:30'};
-const COLORS=['var(--pu600)','var(--tl600)','#D85A30','#D4537E','#185FA5','#3B6D11','#BA7517','#888780'];
-const BCOLORS=['var(--pu50)','var(--tl50)','#FAECE7','#FBEAF0','#E6F1FB','#EAF3DE','#FAEEDA','#F1EFE8'];
-const TCOLORS=['var(--pu800)','var(--tl800)','var(--co600)','#72243E','#0C447C','#27500A','var(--am600)','var(--gr600)'];
+    <script>
+        /* 지정된 11인의 초기 회원 구성 풀 */
+        const INITIAL_PARTICIPANTS = [
+            { id: "p-1", name: "윤은실", bookedCount: 0 },
+            { id: "p-2", name: "김희예", bookedCount: 0 },
+            { id: "p-3", name: "박성진", bookedCount: 0 },
+            { id: "p-4", name: "윤혜진", bookedCount: 0 },
+            { id: "p-5", name: "김서연", bookedCount: 0 },
+            { id: "p-6", name: "민유경", bookedCount: 0 },
+            { id: "p-7", name: "이현옥", bookedCount: 0 },
+            { id: "p-8", name: "김신곤", bookedCount: 0 },
+            { id: "p-9", name: "김영효", bookedCount: 0 },
+            { id: "p-10", name: "강인기", bookedCount: 0 },
+            { id: "p-11", name: "오지수", bookedCount: 0 }
+        ];
 
-let members=[],bookings=[],adminPw='admin1234';
-let weekOffset=0,dragBookingId=null,quickCell=null,selectedSlot=null;
+        /* 타임 슬롯 고정 데이터 (14:00~16:30, 30분 단위) */
+        const TIME_SLOTS = [
+            { id: "slot-1", timeRange: "14:00 ~ 14:30" },
+            { id: "slot-2", timeRange: "14:30 ~ 15:00" },
+            { id: "slot-3", timeRange: "15:00 ~ 15:30" },
+            { id: "slot-4", timeRange: "15:30 ~ 16:00" },
+            { id: "slot-5", timeRange: "16:00 ~ 16:30" }
+        ];
 
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
+        /* 초기 코칭 데이터 예약 예시 */
+        const INITIAL_BOOKINGS = [
+            {
+                id: "b-101",
+                participantId: "p-1",
+                participantName: "윤은실",
+                date: "2026-06-11",
+                slotTime: "14:00 ~ 14:30",
+                createdAt: "2026-06-10"
+            },
+            {
+                id: "b-102",
+                participantId: "p-2",
+                participantName: "김희예",
+                date: "2026-06-11",
+                slotTime: "14:30 ~ 15:00",
+                createdAt: "2026-06-10"
+            }
+        ];
 
-async function loadAll(){
-  try{const r=await window.storage.get('cv3_members');if(r)members=JSON.parse(r.value)}catch(e){members=[]}
-  try{const r=await window.storage.get('cv3_bookings');if(r)bookings=JSON.parse(r.value)}catch(e){bookings=[]}
-  try{const r=await window.storage.get('cv3_pw');if(r)adminPw=r.value}catch(e){}
-  refreshAll()
-}
+        /* 초기 현장 공유 데이터 */
+        const INITIAL_PHOTOS = [
+            {
+                id: "photo-101",
+                author: "코치(관리자)",
+                title: "소사벌연구TF 1차 기획 방향 설계 회의",
+                desc: "코칭을 시작하며 공유된 비즈니스 전개 아이디어 및 방향성 마일스톤 설계 판서 내용입니다.",
+                imageSrc: "https://placehold.co/600x400/1c2541/ffffff?text=Coaching+Board+1",
+                date: "2026-06-11"
+            }
+        ];
 
-async function save(){
-  try{await window.storage.set('cv3_members',JSON.stringify(members))}catch(e){}
-  try{await window.storage.set('cv3_bookings',JSON.stringify(bookings))}catch(e){}
-}
+        /* 전역 관리 상태 */
+        let participants = [];
+        let bookings = [];
+        let photos = [];
+        let blockedDates = [];
+        let activeTab = 'scheduler';
+        let deleteTargetId = null;
+        let editPhotoTargetId = null;
+        let isAdminLoggedIn = false;
 
-function refreshAll(){
-  updateStats();renderMemberList();populateMemberDropdowns();
-  buildDateOptions();renderCal();renderList();
-}
+        // 달력 조작 (오늘 기준 고정 시점 시뮬레이션: 2026년 6월 10일)
+        let currentCalendarYear = 2026;
+        let currentCalendarMonth = 5; // 0이 1월, 5가 6월
+        let selectedDate = "2026-06-10";
 
-function updateStats(){
-  document.getElementById('st-total').textContent=bookings.length;
-  document.getElementById('st-members').textContent=members.length;
-  const total=getWorkdays().length*TIME_SLOTS.length;
-  document.getElementById('st-remain').textContent=Math.max(0,total-bookings.length);
-}
+        window.onload = function() {
+            // 로컬 스토리지에 데이터가 있을 경우 사용, 없을 경우 초기 데이터 바인딩
+            const storedParticipants = localStorage.getItem('sosa_parts');
+            if (storedParticipants) {
+                participants = JSON.parse(storedParticipants);
+            } else {
+                participants = [...INITIAL_PARTICIPANTS];
+                saveParticipants();
+            }
 
-function getWorkdays(){
-  const days=[];const s=new Date(2025,5,10);const e=new Date(2025,6,10);
-  for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1)){
-    if(d.getDay()!==0&&d.getDay()!==6)days.push(new Date(d));
-  }return days;
-}
+            const storedBookings = localStorage.getItem('sosa_bookings');
+            if (storedBookings) {
+                bookings = JSON.parse(storedBookings);
+            } else {
+                bookings = [...INITIAL_BOOKINGS];
+                saveBookings();
+            }
 
-function fmtDate(d){const w=['일','월','화','수','목','금','토'];return`${d.getMonth()+1}/${d.getDate()}(${w[d.getDay()]})`}
-function fmtKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-function ci(id){const i=members.findIndex(m=>m.id===id);return i<0?0:i%COLORS.length}
-function cBg(id){return BCOLORS[ci(id)]}
-function cTx(id){return TCOLORS[ci(id)]}
-function cBd(id){return COLORS[ci(id)]}
+            const storedPhotos = localStorage.getItem('sosa_photos');
+            if (storedPhotos) {
+                photos = JSON.parse(storedPhotos);
+            } else {
+                photos = [...INITIAL_PHOTOS];
+                savePhotos();
+            }
 
-function buildDateOptions(){
-  const sel=document.getElementById('b-date');const cur=sel.value;
-  sel.innerHTML='<option value="">-- 날짜 선택 --</option>';
-  getWorkdays().forEach(d=>{
-    const k=fmtKey(d);const cnt=bookings.filter(b=>b.date===k).length;const full=cnt>=TIME_SLOTS.length;
-    const o=document.createElement('option');o.value=k;
-    o.textContent=`${fmtDate(d)} [${full?'마감':`${TIME_SLOTS.length-cnt}자리`}]`;
-    if(full)o.disabled=true;sel.appendChild(o);
-  });
-  if(cur)sel.value=cur;
-}
+            const storedBlockedDates = localStorage.getItem('sosa_blocked');
+            if (storedBlockedDates) {
+                blockedDates = JSON.parse(storedBlockedDates);
+            } else {
+                blockedDates = ["2026-06-14", "2026-06-21", "2026-06-28", "2026-07-05"]; // 일요일들 가상 차단 기본값
+                saveBlockedDates();
+            }
 
-function onMemberChange(){
-  const mid=document.getElementById('b-member').value;
-  const info=document.getElementById('b-member-info');
-  const disp=document.getElementById('b-max-display');
-  selectedSlot=null;
-  document.getElementById('selected-summary').style.display='none';
-  if(!mid){info.style.display='none';disp.textContent='대상자 선택 후 표시';return}
-  const m=members.find(x=>x.id===mid);
-  const used=bookings.filter(b=>b.memberId===mid).length;
-  const remain=parseInt(m.max)-used;
-  disp.textContent=`최대 ${m.max}회 (${used}회 완료, ${remain}회 남음)`;
-  if(remain<=0){
-    info.style.display='block';info.style.background='var(--co50)';info.style.color='var(--co600)';
-    info.textContent=`${m.name}님은 최대 예약 횟수(${m.max}회)를 모두 채웠습니다.`;
-  }else{
-    info.style.display='block';info.style.background='var(--pu50)';info.style.color='var(--pu800)';
-    info.textContent=`${m.name}님 · 예약 가능 횟수 ${remain}회 남음`;
-  }
-  renderBookSlots();
-}
+            // 기본 관리자 패스워드 설정 확인 ('1234' 초기화)
+            if (!localStorage.getItem('sosa_admin_password')) {
+                localStorage.setItem('sosa_admin_password', '1234');
+            }
 
-function renderBookSlots(){
-  const dk=document.getElementById('b-date').value;
-  const mid=document.getElementById('b-member').value;
-  const wrap=document.getElementById('book-slots-wrap');
-  selectedSlot=null;
-  document.getElementById('selected-summary').style.display='none';
-  if(!dk){wrap.innerHTML='<div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:1.5rem">날짜를 먼저 선택해주세요</div>';return}
+            // 실시간 상태 정밀 카운팅 동화
+            synchronizeBookedCounts();
 
-  const alreadyOnDay=mid&&bookings.some(b=>b.memberId===mid&&b.date===dk);
-  const dayB=bookings.filter(b=>b.date===dk);
+            // 대상자 선택박스 드롭다운 초기화
+            populateParticipantDropdowns();
 
-  let html='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">';
-  TIME_SLOTS.forEach(t=>{
-    const slotBooked=dayB.some(b=>b.time===t);
-    let cls='slot-btn';let onclick='';
-    if(alreadyOnDay){cls='slot-btn disabled-day';onclick=''}
-    else if(slotBooked){cls='slot-btn booked';onclick=''}
-    else{onclick=`toggleSlot('${t}')`}
-    const endT=SLOT_END[t];
-    html+=`<div class="${cls}" id="sb-${t.replace(':','-')}" onclick="${onclick}">
-      ${t}<br><span style="font-size:10px;opacity:0.75">~${endT}</span>
-      ${slotBooked?'<br><span style="font-size:10px">마감</span>':''}
-      ${alreadyOnDay&&!slotBooked?'<br><span style="font-size:10px">예약됨</span>':''}
-    </div>`;
-  });
-  html+='</div>';
-  if(alreadyOnDay){
-    html+=`<div style="margin-top:8px;padding:7px 10px;background:var(--am50);border-radius:var(--border-radius-md);font-size:12px;color:var(--am600)">
-      <i class="ti ti-info-circle" style="font-size:12px" aria-hidden="true"></i> 이 날짜에 이미 예약이 있습니다. 하루에 1타임만 예약 가능합니다.
-    </div>`;
-  }
-  wrap.innerHTML=html;
-}
+            // 렌더링 호출
+            renderParticipantStatusSummary();
+            renderCalendar();
+            selectCalendarDate(selectedDate);
+            renderBookingTable();
+            renderGallery();
+        };
 
-function toggleSlot(t){
-  const mid=document.getElementById('b-member').value;
-  if(!mid){toast('대상자를 먼저 선택해주세요','error');return}
-  const m=members.find(x=>x.id===mid);
-  const used=bookings.filter(b=>b.memberId===mid).length;
-  if(used>=parseInt(m.max)){toast(`${m.name}님은 최대 예약 횟수를 초과합니다`,'error');return}
+        // 데이터 상태 동기화 및 LocalStorage 저장기능
+        function synchronizeBookedCounts() {
+            participants.forEach(p => {
+                p.bookedCount = bookings.filter(b => b.participantId === p.id).length;
+            });
+            saveParticipants();
+        }
 
-  if(selectedSlot===t){
-    selectedSlot=null;
-    const el=document.getElementById('sb-'+t.replace(':','-'));
-    el.classList.remove('selected');
-    document.getElementById('selected-summary').style.display='none';
-  }else{
-    if(selectedSlot){
-      const old=document.getElementById('sb-'+selectedSlot.replace(':','-'));
-      if(old)old.classList.remove('selected');
-    }
-    selectedSlot=t;
-    const el=document.getElementById('sb-'+t.replace(':','-'));
-    el.classList.add('selected');
-    const sum=document.getElementById('selected-summary');
-    const dk=document.getElementById('b-date').value;
-    sum.style.display='block';
-    sum.innerHTML=`<i class="ti ti-check" style="font-size:12px" aria-hidden="true"></i> 선택: ${dk.slice(5)} ${t}~${SLOT_END[t]}`;
-  }
-}
+        function saveParticipants() {
+            localStorage.setItem('sosa_parts', JSON.stringify(participants));
+        }
 
-async function submitBooking(){
-  const mid=document.getElementById('b-member').value;
-  const dk=document.getElementById('b-date').value;
-  if(!mid){toast('대상자를 선택해주세요','error');return}
-  if(!dk){toast('날짜를 선택해주세요','error');return}
-  if(!selectedSlot){toast('시간을 선택해주세요','error');return}
-  const m=members.find(x=>x.id===mid);
-  const used=bookings.filter(b=>b.memberId===mid).length;
-  if(used>=parseInt(m.max)){toast(`${m.name}님의 예약 가능 횟수를 초과합니다`,'error');return}
-  if(bookings.some(b=>b.date===dk&&b.memberId===mid)){toast('이 날짜에 이미 예약이 있습니다','error');return}
-  if(bookings.some(b=>b.date===dk&&b.time===selectedSlot)){toast('해당 시간은 이미 마감되었습니다','error');return}
-  bookings.push({id:uid(),memberId:mid,date:dk,time:selectedSlot,created:new Date().toISOString()});
-  await save();refreshAll();
-  document.getElementById('b-date').value='';selectedSlot=null;
-  document.getElementById('book-slots-wrap').innerHTML='<div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:1.5rem">날짜를 먼저 선택해주세요</div>';
-  document.getElementById('selected-summary').style.display='none';
-  document.getElementById('b-member-info').style.display='none';
-  document.getElementById('b-max-display').textContent='대상자 선택 후 표시';
-  toast(`${m.name}님 예약이 완료되었습니다`,'success');
-  setTimeout(()=>switchTab('cal'),900);
-}
+        function saveBookings() {
+            localStorage.setItem('sosa_bookings', JSON.stringify(bookings));
+        }
 
-function getWeekDays(){
-  const base=new Date(2025,5,10);const start=new Date(base);
-  start.setDate(base.getDate()+weekOffset*5);
-  const days=[];const end=new Date(2025,6,10);
-  for(let i=0;i<5;i++){const d=new Date(start);d.setDate(start.getDate()+i);if(d<=end)days.push(d);}
-  return days;
-}
+        function savePhotos() {
+            localStorage.setItem('sosa_photos', JSON.stringify(photos));
+        }
 
-function renderCal(){
-  const days=getWeekDays();
-  if(!days.length){document.getElementById('cal-table').innerHTML='<tr><td style="padding:2rem;text-align:center;color:var(--color-text-secondary)">표시할 날짜가 없습니다</td></tr>';return}
-  document.getElementById('week-label').textContent=`${days[0].getMonth()+1}/${days[0].getDate()} – ${days[days.length-1].getMonth()+1}/${days[days.length-1].getDate()}`;
-  let html='<thead><tr><th class="time-col">시간</th>';
-  days.forEach(d=>{const fd=fmtDate(d);html+=`<th style="font-size:11px;padding:5px 3px;text-align:center"><div style="font-weight:500;font-size:12px">${fd.split('(')[0]}</div><div style="color:var(--color-text-secondary)">${fd.match(/\((.)\)/)[1]}요일</div></th>`;});
-  html+='</tr></thead><tbody>';
-  TIME_SLOTS.forEach(t=>{
-    html+=`<tr><td class="time-col">${t}</td>`;
-    days.forEach(d=>{
-      const dk=fmtKey(d);const bk=bookings.find(b=>b.date===dk&&b.time===t);
-      if(bk){
-        const m=members.find(x=>x.id===bk.memberId);
-        html+=`<td class="slot-cell" data-date="${dk}" data-time="${t}"
-          ondragover="event.preventDefault();this.classList.add('drop-over')"
-          ondragleave="this.classList.remove('drop-over')"
-          ondrop="onDrop(event,'${dk}','${t}')">
-          <div class="booking-chip" draggable="true"
-            ondragstart="onDragStart(event,'${bk.id}')"
-            style="background:${cBg(bk.memberId)};color:${cTx(bk.memberId)};border:0.5px solid ${cBd(bk.memberId)}40">
-            <i class="ti ti-user" style="font-size:10px;flex-shrink:0" aria-hidden="true"></i>
-            <span class="chip-name" title="${m?m.name:'?'}">${m?m.name:'?'}</span>
-            <span class="chip-del" onclick="deleteBooking('${bk.id}')">×</span>
-          </div></td>`;
-      }else{
-        html+=`<td class="slot-cell" data-date="${dk}" data-time="${t}"
-          ondragover="event.preventDefault();this.classList.add('drop-over')"
-          ondragleave="this.classList.remove('drop-over')"
-          ondrop="onDrop(event,'${dk}','${t}')"
-          onclick="openQuick('${dk}','${t}',event)"></td>`;
-      }
-    });
-    html+='</tr>';
-  });
-  html+='</tbody>';
-  document.getElementById('cal-table').innerHTML=html;
-  renderLegend();
-}
+        function saveBlockedDates() {
+            localStorage.setItem('sosa_blocked', JSON.stringify(blockedDates));
+        }
 
-function renderLegend(){
-  const used=members.filter(m=>bookings.some(b=>b.memberId===m.id));
-  document.getElementById('cal-legend').innerHTML=used.map(m=>`<div class="legend-item"><span class="legend-dot" style="background:${cBg(m.id)};border:0.5px solid ${cBd(m.id)}50"></span><span style="color:${cTx(m.id)}">${m.name}</span></div>`).join('');
-}
+        function getAdminPassword() {
+            return localStorage.getItem('sosa_admin_password') || '1234';
+        }
 
-function onDragStart(e,id){dragBookingId=id;e.dataTransfer.effectAllowed='move'}
-async function onDrop(e,dk,t){
-  e.preventDefault();e.currentTarget.classList.remove('drop-over');
-  if(!dragBookingId)return;
-  const bk=bookings.find(b=>b.id===dragBookingId);
-  if(!bk){dragBookingId=null;return}
-  if(bookings.some(b=>b.date===dk&&b.time===t&&b.id!==dragBookingId)){toast('해당 시간에 이미 예약이 있습니다','error');dragBookingId=null;return}
-  if(bk.date!==dk&&bookings.some(b=>b.memberId===bk.memberId&&b.date===dk&&b.id!==dragBookingId)){toast('해당 날짜에 이미 예약이 있습니다 (하루 1타임)','error');dragBookingId=null;return}
-  bk.date=dk;bk.time=t;dragBookingId=null;
-  await save();refreshAll();toast('일정이 이동되었습니다','success');
-}
+        // 대상자 드롭다운 목록 갱신
+        function populateParticipantDropdowns() {
+            const selectBook = document.getElementById('book-participant');
+            const selectPhoto = document.getElementById('photo-author');
 
-async function deleteBooking(id){
-  bookings=bookings.filter(b=>b.id!==id);
-  await save();refreshAll();toast('예약이 삭제되었습니다','success');
-}
+            selectBook.innerHTML = '<option value="" disabled selected>코칭 받을 대상자를 선택하세요.</option>';
+            selectPhoto.innerHTML = '<option value="코치(관리자)">코치(관리자)</option>';
 
-function prevWeek(){weekOffset=Math.max(0,weekOffset-1);renderCal()}
-function nextWeek(){weekOffset=Math.min(Math.ceil(getWorkdays().length/5)-1,weekOffset+1);renderCal()}
+            participants.forEach(p => {
+                const optBook = document.createElement('option');
+                optBook.value = p.id;
+                optBook.innerText = `${p.name} (예약 ${p.bookedCount}회)`;
+                selectBook.appendChild(optBook);
 
-function openQuick(dk,t,e){
-  const qsel=document.getElementById('qm-member');
-  qsel.innerHTML='<option value="">-- 선택 --</option>';
-  members.forEach(mb=>{
-    const used=bookings.filter(b=>b.memberId===mb.id).length;
-    const alreadyDay=bookings.some(b=>b.memberId===mb.id&&b.date===dk);
-    if(used<parseInt(mb.max)&&!alreadyDay){
-      const o=document.createElement('option');o.value=mb.id;o.textContent=`${mb.name} (${used}/${mb.max}회)`;qsel.appendChild(o);
-    }
-  });
-  document.getElementById('qm-title').textContent=`${dk.slice(5)} ${t}~${SLOT_END[t]} 예약 추가`;
-  quickCell={dk,t};
-  const m=document.getElementById('quick-modal');m.style.display='block';
-  const wr=document.getElementById('sec-cal').getBoundingClientRect();
-  const rc=e.currentTarget.getBoundingClientRect();
-  m.style.left=Math.min(rc.left-wr.left,380)+'px';
-  m.style.top=(rc.top-wr.top+30)+'px';
-}
-function closeQuick(){document.getElementById('quick-modal').style.display='none';quickCell=null}
-async function confirmQuick(){
-  const mid=document.getElementById('qm-member').value;
-  if(!mid){toast('대상자를 선택해주세요','error');return}
-  if(bookings.some(b=>b.date===quickCell.dk&&b.time===quickCell.t)){toast('이미 예약된 시간입니다','error');closeQuick();return}
-  bookings.push({id:uid(),memberId:mid,date:quickCell.dk,time:quickCell.t,created:new Date().toISOString()});
-  closeQuick();await save();refreshAll();toast('예약이 추가되었습니다','success');
-}
+                const optPhoto = document.createElement('option');
+                optPhoto.value = p.name;
+                optPhoto.innerText = p.name;
+                selectPhoto.appendChild(optPhoto);
+            });
+        }
 
-function renderList(){
-  const c=document.getElementById('list-content');
-  if(!bookings.length){c.innerHTML='<div style="text-align:center;padding:2rem;color:var(--color-text-secondary);font-size:13px">예약 내역이 없습니다</div>';return}
-  const sorted=[...bookings].sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time));
-  const byDate={};sorted.forEach(b=>{if(!byDate[b.date])byDate[b.date]=[];byDate[b.date].push(b)});
-  let html='';
-  Object.keys(byDate).sort().forEach(dk=>{
-    const d=new Date(dk+'T00:00:00');const list=byDate[dk];
-    html+=`<div style="margin-bottom:12px">
-      <div style="background:var(--pu50);padding:6px 10px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;color:var(--pu800);margin-bottom:4px;display:flex;justify-content:space-between">
-        <span><i class="ti ti-calendar" style="font-size:12px" aria-hidden="true"></i> ${fmtDate(d)}</span>
-        <span style="color:var(--pu600);font-weight:400">${list.length}건</span>
-      </div>
-      <table class="sched-table"><thead><tr><th style="width:110px">시간</th><th>이름</th><th style="width:80px">예약현황</th></tr></thead><tbody>`;
-    TIME_SLOTS.forEach(t=>{
-      const bk=list.find(b=>b.time===t);
-      if(bk){
-        const m=members.find(x=>x.id===bk.memberId);
-        const total=bookings.filter(b=>b.memberId===bk.memberId).length;
-        html+=`<tr>
-          <td><span class="badge" style="background:${cBg(bk.memberId)};color:${cTx(bk.memberId)}">${t}–${SLOT_END[t]}</span></td>
-          <td style="font-weight:500">${m?m.name:'?'}</td>
-          <td><span style="font-size:11px;color:${cTx(bk.memberId)};background:${cBg(bk.memberId)};padding:2px 6px;border-radius:999px">${total}/${m?m.max:'?'}회</span></td>
-        </tr>`;
-      }else{
-        html+=`<tr><td><span class="badge" style="background:var(--gr50);color:var(--gr600)">${t}–${SLOT_END[t]}</span></td><td colspan="2" style="color:var(--color-text-tertiary);font-size:11px">빈 슬롯</td></tr>`;
-      }
-    });
-    html+='</tbody></table></div>';
-  });
-  c.innerHTML=html;
-}
+        // 최상단 참가자별 코칭 이수 카운팅 대시보드
+        function renderParticipantStatusSummary() {
+            const container = document.getElementById('participant-badges-container');
+            container.innerHTML = '';
 
-function renderMemberList(){
-  const c=document.getElementById('members-list');
-  if(!members.length){c.innerHTML='<div style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:1rem">등록된 대상자가 없습니다</div>';return}
-  c.innerHTML=members.map((m,i)=>{
-    const cnt=bookings.filter(b=>b.memberId===m.id).length;
-    const bg=BCOLORS[i%COLORS.length];const tc=TCOLORS[i%COLORS.length];
-    return`<div class="member-row">
-      <div class="avatar" style="background:${bg};color:${tc}">${m.name.slice(0,2)}</div>
-      <div class="member-info"><div class="member-name">${m.name}</div></div>
-      <span class="member-count" style="background:${bg};color:${tc}">${cnt}/${m.max}회</span>
-      <button class="btn danger" style="padding:4px 8px;font-size:11px" onclick="deleteMember('${m.id}')"><i class="ti ti-trash" style="font-size:11px" aria-hidden="true"></i></button>
-    </div>`;
-  }).join('');
-}
+            participants.forEach(p => {
+                let bg = "bg-slate-100 text-slate-700 border border-slate-200";
+                if (p.bookedCount === 0) bg = "bg-rose-50 text-rose-700 border border-rose-200";
+                else if (p.bookedCount === 1) bg = "bg-amber-50 text-amber-700 border border-amber-200";
+                else if (p.bookedCount >= 2) bg = "bg-emerald-50 text-emerald-700 border border-emerald-200";
 
-function populateMemberDropdowns(){
-  ['b-member'].forEach(id=>{
-    const sel=document.getElementById(id);const cur=sel.value;
-    sel.innerHTML='<option value="">-- 대상자를 선택하세요 --</option>';
-    members.forEach(m=>{
-      const cnt=bookings.filter(b=>b.memberId===m.id).length;
-      const o=document.createElement('option');o.value=m.id;
-      o.textContent=`${m.name} [${cnt}/${m.max}회]`;sel.appendChild(o);
-    });
-    if(cur)sel.value=cur;
-  });
-}
+                const span = document.createElement('span');
+                span.className = `px-3 py-1.5 rounded-xl font-bold transition-all ${bg}`;
+                span.innerHTML = `${p.name} <span class="font-extrabold text-slate-900 ml-1.5">${p.bookedCount}회</span>`;
+                container.appendChild(span);
+            });
+        }
 
-async function addMember(){
-  const name=document.getElementById('nm-name').value.trim();
-  if(!name){toast('이름을 입력해주세요','error');return}
-  const max=parseInt(document.getElementById('nm-max').value);
-  members.push({id:uid(),name,max});
-  document.getElementById('nm-name').value='';
-  await save();refreshAll();toast(`${name}님이 등록되었습니다`,'success');
-}
+        // 탭 제어 전환기
+        function switchTab(tabName) {
+            activeTab = tabName;
+            const schedulerSec = document.getElementById('section-scheduler');
+            const gallerySec = document.getElementById('section-gallery');
+            const adminSec = document.getElementById('section-admin');
 
-async function deleteMember(id){
-  const m=members.find(x=>x.id===id);
-  if(bookings.some(b=>b.memberId===id)){toast(`${m?.name}님의 예약이 있습니다. 먼저 예약을 삭제해주세요`,'error');return}
-  members=members.filter(x=>x.id!==id);await save();refreshAll();toast('대상자가 삭제되었습니다','success');
-}
+            const schedBtn = document.getElementById('nav-scheduler-btn');
+            const galleryBtn = document.getElementById('nav-gallery-btn');
+            const adminBtn = document.getElementById('nav-admin-btn');
 
-function checkPw(){
-  if(document.getElementById('pw-input').value===adminPw){
-    document.getElementById('admin-gate').style.display='none';document.getElementById('admin-panel').style.display='block';
-  }else toast('비밀번호가 다릅니다','error');
-}
+            schedulerSec.classList.add('hidden');
+            gallerySec.classList.add('hidden');
+            adminSec.classList.add('hidden');
 
-async function changePw(){
-  const p1=document.getElementById('new-pw').value,p2=document.getElementById('new-pw2').value;
-  if(!p1){toast('새 비밀번호를 입력해주세요','error');return}
-  if(p1!==p2){toast('비밀번호가 일치하지 않습니다','error');return}
-  adminPw=p1;try{await window.storage.set('cv3_pw',p1)}catch(e){}
-  document.getElementById('new-pw').value='';document.getElementById('new-pw2').value='';
-  toast('비밀번호가 변경되었습니다','success');
-}
+            schedBtn.className = "px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center space-x-1.5";
+            galleryBtn.className = "px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center space-x-1.5";
+            adminBtn.className = "px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all flex items-center space-x-1.5";
 
-async function clearAllBookings(){
-  if(!confirm('전체 예약을 삭제할까요?'))return;
-  bookings=[];await save();refreshAll();toast('전체 예약이 삭제되었습니다','success');
-}
+            if (tabName === 'scheduler') {
+                schedulerSec.classList.remove('hidden');
+                schedBtn.className = "px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm transition-all flex items-center space-x-1.5 bg-brand-100 text-brand-600";
+                renderCalendar();
+                renderBookingTable();
+            } else if (tabName === 'gallery') {
+                gallerySec.classList.remove('hidden');
+                galleryBtn.className = "px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm transition-all flex items-center space-x-1.5 bg-brand-100 text-brand-600";
+                renderGallery();
+            } else if (tabName === 'admin') {
+                adminSec.classList.remove('hidden');
+                adminBtn.className = "px-3 py-2 sm:px-4 rounded-lg font-bold text-xs sm:text-sm transition-all flex items-center space-x-1.5 bg-brand-100 text-brand-600";
+                updateAdminView();
+            }
+        }
 
-async function clearAllMembers(){
-  if(!confirm('전체 대상자를 삭제할까요?'))return;
-  if(bookings.length){toast('예약이 남아있습니다. 먼저 예약을 삭제해주세요','error');return}
-  members=[];await save();refreshAll();toast('전체 대상자가 삭제되었습니다','success');
-}
+        // 토스트 팝업 알림 시스템
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = "bg-white border-l-4 border-emerald-500 text-slate-800 shadow-xl";
+            let icon = '<i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>';
+            
+            if (type === 'error') {
+                bgClass = "bg-white border-l-4 border-rose-500 text-slate-800 shadow-xl";
+                icon = '<i class="fa-solid fa-circle-exclamation text-rose-500 text-sm"></i>';
+            } else if (type === 'info') {
+                bgClass = "bg-white border-l-4 border-blue-500 text-slate-800 shadow-xl";
+                icon = '<i class="fa-solid fa-circle-info text-blue-500 text-sm"></i>';
+            }
 
-function switchTab(name){
-  ['book','cal','list','admin'].forEach(t=>{
-    document.getElementById('sec-'+t).classList.remove('active');
-    document.getElementById('tab-btn-'+t).classList.remove('active');
-  });
-  document.getElementById('sec-'+name).classList.add('active');
-  document.getElementById('tab-btn-'+name).classList.add('active');
-  if(name==='cal')renderCal();
-  if(name==='list')renderList();
-}
+            toast.className = `flex items-center space-x-3 px-4 py-3 rounded-xl border border-slate-100 text-xs font-bold ${bgClass} transform translate-y-2 opacity-0 transition-all duration-300`;
+            toast.innerHTML = `
+                ${icon}
+                <span class="flex-grow">${message}</span>
+            `;
 
-function toast(msg,type){
-  const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);
-}
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
 
-loadAll();
-</script>
+        // 달력 이전달/다음달 이동 제어
+        function changeMonth(offset) {
+            currentCalendarMonth += offset;
+            if (currentCalendarMonth > 11) {
+                currentCalendarMonth = 0;
+                currentCalendarYear += 1;
+            } else if (currentCalendarMonth < 0) {
+                currentCalendarMonth = 11;
+                currentCalendarYear -= 1;
+            }
+            renderCalendar();
+        }
+
+        function setToCurrentMonth() {
+            currentCalendarYear = 2026;
+            currentCalendarMonth = 5; // 6월 고정
+            selectedDate = "2026-06-10";
+            renderCalendar();
+            selectCalendarDate(selectedDate);
+        }
+
+        // 달력 엔진 렌더러
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-days-grid');
+            const title = document.getElementById('calendar-month-year');
+            
+            title.innerText = `${currentCalendarYear}년 ${currentCalendarMonth + 1}월`;
+            grid.innerHTML = '';
+
+            const firstDayIndex = new Date(currentCalendarYear, currentCalendarMonth, 1).getDay();
+            const totalDays = new Date(currentCalendarYear, currentCalendarMonth + 1, 0).getDate();
+            const prevTotalDays = new Date(currentCalendarYear, currentCalendarMonth, 0).getDate();
+
+            // 이전 달 빈칸 채우기
+            for (let i = firstDayIndex - 1; i >= 0; i--) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = "p-3 text-slate-300 pointer-events-none select-none text-xs";
+                dayDiv.innerText = prevTotalDays - i;
+                grid.appendChild(dayDiv);
+            }
+
+            // 현재 달 그리드 삽입
+            for (let day = 1; day <= totalDays; day++) {
+                const dayString = `${currentCalendarYear}-${String(currentCalendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dayOfWeek = new Date(currentCalendarYear, currentCalendarMonth, day).getDay();
+
+                const btn = document.createElement('button');
+                btn.className = "p-2 sm:p-3 relative rounded-xl hover:bg-slate-100 transition-all font-semibold flex flex-col items-center justify-between min-h-[50px] aspect-square focus:outline-none";
+
+                if (dayOfWeek === 0) btn.className += " text-red-500";
+                else if (dayOfWeek === 6) btn.className += " text-blue-500";
+                else btn.className += " text-slate-700";
+
+                // 오늘부터 1달 이내 코칭 예약 범위 강조 (2026.06.10 ~ 2026.07.10)
+                const checkDate = new Date(dayString);
+                const startDate = new Date("2026-06-10");
+                const endDate = new Date("2026-07-10");
+                const isInRange = checkDate >= startDate && checkDate <= endDate;
+
+                // 예약 차단(금지) 날짜 여부 판단
+                const isBlocked = blockedDates.includes(dayString);
+
+                if (isBlocked) {
+                    btn.className += " bg-rose-50 border border-rose-200 text-rose-500/60 cursor-not-allowed";
+                    btn.disabled = true;
+                } else if (!isInRange) {
+                    btn.className += " opacity-25 cursor-not-allowed";
+                    btn.disabled = true;
+                }
+
+                // 해당 날짜 총 예약수 확인
+                const dailyBookingsCount = bookings.filter(b => b.date === dayString).length;
+
+                // 일자 출력
+                const dayNumSpan = document.createElement('span');
+                dayNumSpan.innerText = day;
+                btn.appendChild(dayNumSpan);
+
+                // 일별 예약 존재시 미니 인디케이터 도트 표시
+                if (dailyBookingsCount > 0 && !isBlocked) {
+                    const dotContainer = document.createElement('div');
+                    dotContainer.className = "flex space-x-0.5 mt-1";
+                    
+                    for (let d = 0; d < Math.min(dailyBookingsCount, 3); d++) {
+                        const dot = document.createElement('span');
+                        dot.className = "w-1 h-1 bg-brand-500 rounded-full inline-block";
+                        dotContainer.appendChild(dot);
+                    }
+                    btn.appendChild(dotContainer);
+                } else {
+                    const emptyIndicator = document.createElement('div');
+                    emptyIndicator.className = "h-1";
+                    btn.appendChild(emptyIndicator);
+                }
+
+                // 차단 상태 텍스트
+                if (isBlocked) {
+                    const blockTag = document.createElement('span');
+                    blockTag.className = "text-[7px] text-red-500 bg-white font-extrabold px-1 rounded border border-red-200 mt-1 scale-90";
+                    blockTag.innerText = "차단됨";
+                    btn.appendChild(blockTag);
+                }
+
+                // 선택된 날짜 하이라이팅
+                if (dayString === selectedDate && !isBlocked) {
+                    btn.className = btn.className.replace(/text-red-500|text-blue-500|text-slate-700/g, '');
+                    btn.className += " bg-brand-600 text-white hover:bg-brand-700 shadow-md ring-2 ring-brand-500/30";
+                }
+
+                btn.onclick = () => selectCalendarDate(dayString);
+                grid.appendChild(btn);
+            }
+        }
+
+        // 날짜 선택 트리거
+        function selectCalendarDate(dateStr) {
+            selectedDate = dateStr;
+            renderCalendar();
+
+            document.getElementById('selected-date-label').innerText = dateStr;
+            document.getElementById('book-date-display').value = dateStr;
+
+            renderDailySlots(dateStr);
+            document.getElementById('book-time-display').value = '';
+        }
+
+        // 시간 단위 타임슬롯 매핑
+        function renderDailySlots(dateStr) {
+            const container = document.getElementById('daily-slots-container');
+            container.innerHTML = '';
+
+            // 만약 선택된 날짜가 강제 예약 금지일인 경우
+            if (blockedDates.includes(dateStr)) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-rose-500 bg-rose-50 border border-rose-100 rounded-xl font-bold text-xs">
+                        <i class="fa-solid fa-calendar-minus block text-lg mb-1.5"></i>
+                        <span>해당 날짜는 연구TF 활동에 의해 코칭 예약이 금지되어 있습니다.</span>
+                    </div>
+                `;
+                return;
+            }
+
+            TIME_SLOTS.forEach(slot => {
+                const bookingOnThisSlot = bookings.find(b => b.date === dateStr && b.slotTime === slot.timeRange);
+                const slotWrapper = document.createElement('div');
+                slotWrapper.className = "flex items-center justify-between p-3 rounded-xl border transition-all text-xs ";
+
+                if (bookingOnThisSlot) {
+                    slotWrapper.className += " bg-slate-50 border-slate-200 text-slate-400";
+                    slotWrapper.innerHTML = `
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-slate-500">${slot.timeRange}</span>
+                            <span class="bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded text-[9px] font-black">예약마감</span>
+                        </div>
+                        <div class="text-[11px] font-bold text-slate-600 flex items-center space-x-1">
+                            <i class="fa-solid fa-user-lock text-[10px]"></i>
+                            <span>${bookingOnThisSlot.participantName}</span>
+                        </div>
+                    `;
+                } else {
+                    slotWrapper.className += " bg-white border-slate-100 hover:border-brand-500 cursor-pointer shadow-sm";
+                    slotWrapper.innerHTML = `
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-slate-800">${slot.timeRange}</span>
+                            <span class="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded text-[9px] font-black">예약가능</span>
+                        </div>
+                        <button type="button" class="bg-brand-50 hover:bg-brand-600 text-brand-600 hover:text-white px-3 py-1.5 rounded-lg font-bold transition-all text-[11px]">
+                            선택
+                        </button>
+                    `;
+                    slotWrapper.onclick = () => {
+                        document.getElementById('book-time-display').value = slot.timeRange;
+                        document.querySelectorAll('#daily-slots-container > div').forEach(el => {
+                            el.classList.remove('ring-2', 'ring-brand-500');
+                        });
+                        slotWrapper.classList.add('ring-2', 'ring-brand-500');
+                    };
+                }
+
+                container.appendChild(slotWrapper);
+            });
+        }
+
+        function handleParticipantChange() {
+            const pId = document.getElementById('book-participant').value;
+            const participant = participants.find(p => p.id === pId);
+            const warning = document.getElementById('booking-limit-warning');
+
+            if (participant && participant.bookedCount >= 3) {
+                warning.classList.remove('hidden');
+            } else {
+                warning.classList.add('hidden');
+            }
+        }
+
+        // 신규 코칭 예약 신청
+        function handleNewBooking(e) {
+            e.preventDefault();
+
+            const pId = document.getElementById('book-participant').value;
+            const dateStr = document.getElementById('book-date-display').value;
+            const timeStr = document.getElementById('book-time-display').value;
+
+            if (!pId) {
+                showToast("코칭 대상 참가자를 선택해 주세요.", "error");
+                return;
+            }
+            if (!timeStr) {
+                showToast("시간 슬롯을 우측에서 직접 선택해 주세요.", "error");
+                return;
+            }
+
+            const participant = participants.find(p => p.id === pId);
+            if (!participant) return;
+
+            // 중복 슬롯 검증
+            const isAlreadyBooked = bookings.some(b => b.date === dateStr && b.slotTime === timeStr);
+            if (isAlreadyBooked) {
+                showToast("선택하신 시간 슬롯은 다른 예약으로 마감되었습니다.", "error");
+                return;
+            }
+
+            // 신규 데이터 추가
+            const newBooking = {
+                id: 'b-' + Date.now(),
+                participantId: pId,
+                participantName: participant.name,
+                date: dateStr,
+                slotTime: timeStr,
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+
+            bookings.unshift(newBooking);
+            saveBookings();
+
+            synchronizeBookedCounts();
+
+            document.getElementById('booking-form').reset();
+            document.getElementById('book-date-display').value = selectedDate;
+            document.getElementById('booking-limit-warning').classList.add('hidden');
+
+            showToast(`${participant.name}님의 소사벌연구TF 코칭 예약이 등록되었습니다.`, "success");
+
+            // 리렌더링
+            populateParticipantDropdowns();
+            renderParticipantStatusSummary();
+            renderCalendar();
+            renderDailySlots(selectedDate);
+            renderBookingTable();
+        }
+
+        // 코칭 목록 테이블 렌더러
+        function renderBookingTable() {
+            const rowsContainer = document.getElementById('booking-table-rows');
+            const noData = document.getElementById('no-booking-feedback');
+            const searchQuery = document.getElementById('booking-search').value.trim();
+
+            rowsContainer.innerHTML = '';
+
+            const filteredBookings = bookings.filter(b => {
+                return b.participantName.includes(searchQuery);
+            });
+
+            // 시간 오름차순 정렬
+            filteredBookings.sort((a, b) => {
+                const dateCompare = a.date.localeCompare(b.date);
+                if (dateCompare !== 0) return dateCompare;
+                return a.slotTime.localeCompare(b.slotTime);
+            });
+
+            if (filteredBookings.length === 0) {
+                noData.classList.remove('hidden');
+                return;
+            } else {
+                noData.classList.add('hidden');
+            }
+
+            filteredBookings.forEach((b, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-all duration-150";
+
+                // 회차 카운팅 정보
+                const personalHistory = bookings.filter(item => item.participantId === b.participantId);
+                const sortedHistory = [...personalHistory].sort((x, y) => x.date.localeCompare(y.date) || x.slotTime.localeCompare(y.slotTime));
+                const nthSession = sortedHistory.findIndex(item => item.id === b.id) + 1;
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-0.5 bg-brand-600 text-white font-extrabold rounded text-[10px]">
+                            ${nthSession}차 코칭
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="font-bold text-slate-900">${b.participantName}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-800">
+                        ${b.date}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-slate-500 font-semibold">
+                        <i class="fa-regular fa-clock mr-1 text-slate-400"></i>${b.slotTime}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <button onclick="openConfirmModal('${b.id}')" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors text-[11px] font-bold" title="삭제">
+                            <i class="fa-regular fa-trash-can mr-1"></i>예약해제
+                        </button>
+                    </td>
+                `;
+
+                rowsContainer.appendChild(tr);
+            });
+        }
+
+        // 예약 해제 보안 확인 모달 제어
+        function openConfirmModal(id) {
+            deleteTargetId = id;
+            document.getElementById('cancel-auth-pw').value = '';
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            deleteTargetId = null;
+        }
+
+        document.getElementById('confirm-delete-btn').onclick = function() {
+            const pw = document.getElementById('cancel-auth-pw').value;
+            if (pw !== getAdminPassword()) {
+                showToast("관리자 비밀번호가 일치하지 않습니다.", "error");
+                return;
+            }
+
+            executeCancelBooking();
+        };
+
+        function executeCancelBooking() {
+            if (!deleteTargetId) return;
+
+            const target = bookings.find(b => b.id === deleteTargetId);
+            if (!target) return;
+
+            bookings = bookings.filter(b => b.id !== deleteTargetId);
+            saveBookings();
+
+            synchronizeBookedCounts();
+
+            closeConfirmModal();
+            showToast(`${target.participantName}님의 코칭 슬롯 예약을 안전하게 해제했습니다.`, "info");
+
+            populateParticipantDropdowns();
+            renderParticipantStatusSummary();
+            renderCalendar();
+            renderDailySlots(selectedDate);
+            renderBookingTable();
+        }
+
+        // 공유 자료 드래그 앤 드롭 업로더 및 미리보기
+        function togglePhotoUploadForm() {
+            const container = document.getElementById('photo-upload-container');
+            container.classList.toggle('hidden');
+            if (!container.classList.contains('hidden')) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        const dropZone = document.getElementById('drop-zone');
+        if (dropZone) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('border-brand-500', 'bg-brand-50');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('border-brand-500', 'bg-brand-50');
+                }, false);
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    document.getElementById('photo-file').files = files;
+                    previewSelectedPhoto({ target: { files } });
+                }
+            }, false);
+
+            dropZone.onclick = () => {
+                document.getElementById('photo-file').click();
+            };
+        }
+
+        function previewSelectedPhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.getElementById('photo-preview-img');
+                img.src = event.target.result;
+                
+                document.getElementById('drop-zone-prompt').classList.add('hidden');
+                document.getElementById('photo-preview-container').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function cancelPhotoPreview(e) {
+            e.stopPropagation();
+            document.getElementById('photo-file').value = '';
+            document.getElementById('photo-preview-img').src = '';
+            document.getElementById('drop-zone-prompt').classList.remove('hidden');
+            document.getElementById('photo-preview-container').classList.add('hidden');
+        }
+
+        // 사진 공유 벽면 렌더러
+        function renderGallery() {
+            const grid = document.getElementById('gallery-grid');
+            const noData = document.getElementById('no-photo-feedback');
+            grid.innerHTML = '';
+
+            if (photos.length === 0) {
+                noData.classList.remove('hidden');
+                return;
+            } else {
+                noData.classList.add('hidden');
+            }
+
+            photos.forEach(photo => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm flex flex-col group hover:shadow-md transition-shadow";
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden aspect-video bg-slate-100 border-b border-slate-100">
+                        <img src="${photo.imageSrc}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <span class="absolute top-3 left-3 bg-slate-900/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                            ${photo.date}
+                        </span>
+                        <div class="absolute top-3 right-3 flex space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="openEditGalleryModal('${photo.id}')" class="bg-slate-900/80 hover:bg-slate-950 text-white w-6 h-6 rounded-full flex items-center justify-center backdrop-blur-sm shadow" title="편집">
+                                <i class="fa-solid fa-pen text-[9px]"></i>
+                            </button>
+                            <button onclick="deletePhotoPrompt('${photo.id}')" class="bg-red-600/90 hover:bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center backdrop-blur-sm shadow" title="삭제">
+                                <i class="fa-solid fa-trash-can text-[9px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col justify-between space-y-2">
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-1.5">
+                                <span class="bg-brand-50 text-brand-600 text-[9px] font-extrabold px-1.5 py-0.5 rounded">
+                                    ${photo.author}
+                                </span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-xs">${photo.title}</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">${photo.desc || '코멘트 요약 정보가 존재하지 않습니다.'}</p>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // 신규 사진 데이터 제출
+        function handlePhotoSubmit(e) {
+            e.preventDefault();
+
+            const author = document.getElementById('photo-author').value;
+            const title = document.getElementById('photo-title').value.trim();
+            const desc = document.getElementById('photo-desc').value.trim();
+            const previewImgSrc = document.getElementById('photo-preview-img').src;
+
+            if (!previewImgSrc) {
+                showToast("업로드할 이미지를 등록하십시오.", "error");
+                return;
+            }
+
+            const newPhoto = {
+                id: 'photo-' + Date.now(),
+                author,
+                title,
+                desc,
+                imageSrc: previewImgSrc,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            try {
+                photos.unshift(newPhoto);
+                savePhotos();
+                showToast("기록자료가 성공적으로 공유 벽면에 게시되었습니다.", "success");
+                
+                document.getElementById('photo-form').reset();
+                cancelPhotoPreview({ stopPropagation: () => {} });
+                togglePhotoUploadForm();
+                
+                renderGallery();
+            } catch (error) {
+                showToast("사진 파일 용량이 너무 큽니다. 가벼운 파일로 다시 시도하세요.", "error");
+            }
+        }
+
+        // 갤러리 코멘트/제목 수정 모달 작동 흐름
+        function openEditGalleryModal(id) {
+            editPhotoTargetId = id;
+            const item = photos.find(p => p.id === id);
+            if (!item) return;
+
+            document.getElementById('edit-photo-title').value = item.title;
+            document.getElementById('edit-photo-desc').value = item.desc || '';
+            document.getElementById('edit-photo-auth').value = '';
+
+            document.getElementById('editGalleryModal').classList.remove('hidden');
+        }
+
+        function closeEditGalleryModal() {
+            document.getElementById('editGalleryModal').classList.add('hidden');
+            editPhotoTargetId = null;
+        }
+
+        document.getElementById('confirm-photo-edit-btn').onclick = function() {
+            const authPw = document.getElementById('edit-photo-auth').value;
+            if (authPw !== getAdminPassword()) {
+                showToast("비밀번호가 일치하지 않습니다.", "error");
+                return;
+            }
+
+            const item = photos.find(p => p.id === editPhotoTargetId);
+            if (item) {
+                item.title = document.getElementById('edit-photo-title').value.trim();
+                item.desc = document.getElementById('edit-photo-desc').value.trim();
+                savePhotos();
+                showToast("현장 자료 수정이 완료되었습니다.", "success");
+                closeEditGalleryModal();
+                renderGallery();
+            }
+        };
+
+        // 갤러리 삭제 검증 흐름
+        function deletePhotoPrompt(id) {
+            // 커스텀 프롬프트 구현: 비밀번호 요구 모달을 재사용하여 삭제
+            const pw = prompt("관리자 비밀번호를 입력해 주십시오.");
+            if (pw === null) return;
+            if (pw !== getAdminPassword()) {
+                showToast("비밀번호가 잘못되었습니다.", "error");
+                return;
+            }
+
+            photos = photos.filter(p => p.id !== id);
+            savePhotos();
+            showToast("현장 자료가 안전하게 삭제 처리되었습니다.", "info");
+            renderGallery();
+        }
+
+        // ==============================================
+        // 관리자 제어 핵심 엔진 로직 
+        // ==============================================
+
+        // 관리자 콘솔 접근 인증
+        function handleAdminLogin() {
+            const pw = document.getElementById('admin-auth-pass').value;
+            if (pw === getAdminPassword()) {
+                isAdminLoggedIn = true;
+                showToast("관리자 로그인에 성공했습니다.", "success");
+                updateAdminView();
+            } else {
+                showToast("비밀번호가 잘못되었습니다.", "error");
+            }
+        }
+
+        // 관리자 권한 연동 뷰 스위처
+        function updateAdminView() {
+            const authPanel = document.getElementById('admin-auth-panel');
+            const dashboard = document.getElementById('admin-controls-dashboard');
+
+            if (isAdminLoggedIn) {
+                authPanel.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                renderBlockedDatesList();
+                renderAdminMembers();
+            } else {
+                authPanel.classList.remove('hidden');
+                dashboard.classList.add('hidden');
+                document.getElementById('admin-auth-pass').value = '';
+            }
+        }
+
+        // 관리자 암호 변경 반영 및 지속 유지
+        function changeAdminPassword() {
+            const newPw = document.getElementById('new-admin-pw').value.trim();
+            if (!newPw) {
+                showToast("변경할 비밀번호를 유효하게 지정하십시오.", "error");
+                return;
+            }
+
+            localStorage.setItem('sosa_admin_password', newPw);
+            showToast("관리자 비밀번호가 변경되었습니다. 앞으로 해당 암호가 유지됩니다.", "success");
+            document.getElementById('new-admin-pw').value = '';
+        }
+
+        // 예약 금지 날짜 추가 제어
+        function addBlockedDate() {
+            const val = document.getElementById('block-date-input').value;
+            if (!val) {
+                showToast("날짜를 선택해 주십시오.", "error");
+                return;
+            }
+
+            if (blockedDates.includes(val)) {
+                showToast("이미 예약 불가 차단된 일자입니다.", "error");
+                return;
+            }
+
+            blockedDates.push(val);
+            saveBlockedDates();
+            showToast(`${val} 일자가 성공적으로 코칭 예약 불가일로 차단되었습니다.`, "info");
+            renderBlockedDatesList();
+            renderCalendar();
+            renderDailySlots(selectedDate);
+        }
+
+        // 차단 해제 제어
+        function removeBlockedDate(dateStr) {
+            blockedDates = blockedDates.filter(d => d !== dateStr);
+            saveBlockedDates();
+            showToast(`${dateStr} 일자의 차단 제한 조치를 제거했습니다.`, "success");
+            renderBlockedDatesList();
+            renderCalendar();
+            renderDailySlots(selectedDate);
+        }
+
+        // 차단 날짜 목록 렌더러
+        function renderBlockedDatesList() {
+            const container = document.getElementById('blocked-dates-list');
+            container.innerHTML = '';
+
+            blockedDates.sort();
+
+            if (blockedDates.length === 0) {
+                container.innerHTML = `<span class="text-[10px] text-slate-400 font-medium">차단된 날짜 없음</span>`;
+                return;
+            }
+
+            blockedDates.forEach(date => {
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between bg-rose-50 border border-rose-100 p-2 rounded-lg text-xs font-bold text-rose-800";
+                item.innerHTML = `
+                    <span>${date}</span>
+                    <button onclick="removeBlockedDate('${date}')" class="text-rose-600 hover:text-rose-800"><i class="fa-solid fa-trash-can"></i></button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // 코칭 회원 동적 관리 테이블 제어
+        function renderAdminMembers() {
+            const rows = document.getElementById('admin-member-rows');
+            const totalLabel = document.getElementById('total-member-count');
+            rows.innerHTML = '';
+
+            totalLabel.innerText = `총 ${participants.length}명 등록됨`;
+
+            participants.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-all";
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 whitespace-nowrap font-bold text-slate-900">
+                        <span id="member-name-text-${p.id}">${p.name}</span>
+                        <input type="text" id="member-name-input-${p.id}" value="${p.name}" class="hidden px-2 py-1 bg-white border border-slate-300 rounded text-xs w-24">
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap font-semibold text-slate-500">
+                        ${p.bookedCount} 회 예약 완료
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-right space-x-1.5">
+                        <button id="edit-member-btn-${p.id}" onclick="toggleEditMemberName('${p.id}')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[10px] font-black">이름 수정</button>
+                        <button id="save-member-btn-${p.id}" onclick="saveEditMemberName('${p.id}')" class="hidden px-2 py-1 bg-brand-600 text-white rounded-lg text-[10px] font-black">저장</button>
+                        <button onclick="deleteMember('${p.id}')" class="px-2 py-1 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg text-[10px] font-black">삭제</button>
+                    </td>
+                `;
+                rows.appendChild(tr);
+            });
+        }
+
+        // 회원 가입 등록 제어
+        function addNewMember() {
+            const name = document.getElementById('new-member-name').value.trim();
+            if (!name) {
+                showToast("추가할 회원의 성명을 입력하십시오.", "error");
+                return;
+            }
+
+            const exists = participants.some(p => p.name === name);
+            if (exists) {
+                showToast("이미 동일한 이름의 참가자가 등록되어 있습니다.", "error");
+                return;
+            }
+
+            const newId = 'p-' + Date.now();
+            participants.push({
+                id: newId,
+                name: name,
+                bookedCount: 0
+            });
+            saveParticipants();
+            showToast(`${name} 님이 코칭 대상 회원 리스트에 추가되었습니다.`, "success");
+            
+            document.getElementById('new-member-name').value = '';
+
+            populateParticipantDropdowns();
+            renderParticipantStatusSummary();
+            renderAdminMembers();
+        }
+
+        // 회원 수정 상태 변경 컨트롤러
+        function toggleEditMemberName(id) {
+            document.getElementById(`member-name-text-${id}`).classList.add('hidden');
+            document.getElementById(`member-name-input-${id}`).classList.remove('hidden');
+
+            document.getElementById(`edit-member-btn-${id}`).classList.add('hidden');
+            document.getElementById(`save-member-btn-${id}`).classList.remove('hidden');
+        }
+
+        // 회원 수정 이름 반영
+        function saveEditMemberName(id) {
+            const newName = document.getElementById(`member-name-input-${id}`).value.trim();
+            if (!newName) {
+                showToast("이름을 공백으로 둘 수 없습니다.", "error");
+                return;
+            }
+
+            const p = participants.find(item => item.id === id);
+            if (p) {
+                // 예약 내역 이름도 한꺼번에 동적 교체
+                bookings.forEach(b => {
+                    if (b.participantId === id) {
+                        b.participantName = newName;
+                    }
+                });
+                saveBookings();
+
+                p.name = newName;
+                saveParticipants();
+                showToast("성명이 정상적으로 업데이트되었습니다.", "success");
+            }
+
+            document.getElementById(`member-name-text-${id}`).innerText = newName;
+
+            document.getElementById(`member-name-text-${id}`).classList.remove('hidden');
+            document.getElementById(`member-name-input-${id}`).classList.add('hidden');
+
+            document.getElementById(`edit-member-btn-${id}`).classList.remove('hidden');
+            document.getElementById(`save-member-btn-${id}`).classList.add('hidden');
+
+            populateParticipantDropdowns();
+            renderParticipantStatusSummary();
+            renderBookingTable();
+            renderAdminMembers();
+        }
+
+        // 회원 정보 데이터 영구 삭제
+        function deleteMember(id) {
+            const p = participants.find(item => item.id === id);
+            if (!p) return;
+
+            if (!confirm(`참가자 [${p.name}] 님을 영구 강제 제명하시겠습니까? 연결된 예약 리스트도 한꺼번에 완전 소멸 삭제됩니다.`)) {
+                return;
+            }
+
+            // 회원의 예약 일괄 정리
+            bookings = bookings.filter(b => b.participantId !== id);
+            saveBookings();
+
+            participants = participants.filter(item => item.id !== id);
+            saveParticipants();
+
+            showToast("회원이 완전 삭제 처리되었습니다.", "info");
+
+            populateParticipantDropdowns();
+            renderParticipantStatusSummary();
+            renderCalendar();
+            renderDailySlots(selectedDate);
+            renderBookingTable();
+            renderAdminMembers();
+        }
+    </script>
+</body>
+</html>
