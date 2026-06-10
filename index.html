@@ -154,7 +154,7 @@
               로그인
             </button>
           </div>
-          <p class="text-[10px] text-slate-400">※ 시스템 안내 : 테스트 목적으로 설정된 암호는 <b class="text-slate-600 font-bold">1234</b> 입니다.</p>
+          <p class="text-[10px] text-slate-400 admin-password-hint">※ 시스템 안내 : 테스트 목적으로 설정된 암호는 <b class="text-slate-600 font-bold">1234</b> 입니다.</p>
         </div>
       </div>
 
@@ -180,7 +180,7 @@
         </div>
 
         <!-- Blocked Dates List -->
-        <div class="md:col-span-7 bg-white border border-rose-100 rounded-xl p-5 flex flex-col justify-between">
+        <div class="md:col-span-7 bg-white border border-rose-100 rounded-xl p-5 flex flex-col justify-between space-y-4">
           <div>
             <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between">
               <span class="flex items-center gap-1.5"><i data-lucide="list" class="text-slate-500 w-4 h-4"></i> 실시간 예약 차단/휴무일 목록</span>
@@ -190,9 +190,30 @@
               <!-- Rendered dynamically -->
             </div>
           </div>
-          <p class="text-[11px] text-slate-500 pt-4 border-t border-slate-100 mt-4">
+          <p class="text-[11px] text-slate-500 pt-4 border-t border-slate-100">
             * 차단 목록에서 태그 우측의 <b>'X'</b> 단추를 누르면 차단이 즉시 해제되며 대상자들이 다시 신청할 수 있게 변환됩니다.
           </p>
+        </div>
+
+        <!-- [NEW] Change Admin Password Card (Full width row inside admin tools) -->
+        <div class="md:col-span-12 bg-white border border-rose-100 rounded-xl p-5 space-y-4">
+          <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+            <i data-lucide="key-round" class="text-rose-500 w-4 h-4"></i> 관리자 비밀번호 변경
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">새 비밀번호 입력</label>
+              <input type="password" id="admin-new-password" placeholder="새로운 비밀번호" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-rose-500 focus:border-rose-500">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">새 비밀번호 확인</label>
+              <input type="password" id="admin-new-password-confirm" placeholder="새 비밀번호 재입력" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-rose-500 focus:border-rose-500">
+            </div>
+            <button id="btn-change-password" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="check-square" class="w-4 h-4"></i> 새로운 비밀번호 변경 적용
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-400 admin-password-hint">※ 시스템 안내 : 현재 비밀번호는 <b class="text-slate-600 font-bold">1234</b> 입니다.</p>
         </div>
       </div>
     </section>
@@ -511,6 +532,7 @@
 
     // [NEW] Authentication State for Consultant Panel
     let isAdminLoggedIn = false;
+    let adminPassword = '1234'; // Dynamic password state variable
 
     // Track Blocked/Holiday Dates in memory
     let blockedDates = [
@@ -584,6 +606,7 @@
       return `${yyyy}-${mm}-${dd}`;
     }
 
+    // Helper formatting function for notifications
     function getFormattedNow() {
       const now = new Date();
       return `[${now.toLocaleDateString()} ${now.toTimeString().split(' ')[0]}]`;
@@ -680,6 +703,12 @@
         toolsView.classList.add('hidden');
         logoutBtn.classList.add('hidden');
       }
+
+      // Update current password indicators on the screen
+      const hints = document.querySelectorAll('.admin-password-hint');
+      hints.forEach(hint => {
+        hint.innerHTML = `※ 시스템 안내 : 현재 비밀번호는 <b class="text-slate-600 font-bold">${adminPassword}</b> 입니다.`;
+      });
     }
 
     // Render Calendar representation
@@ -1141,7 +1170,7 @@
       // Admin Panel: Authentication logins
       document.getElementById('btn-admin-login').addEventListener('click', () => {
         const passwordInput = document.getElementById('admin-password');
-        if (passwordInput.value === '1234') {
+        if (passwordInput.value === adminPassword) {
           isAdminLoggedIn = true;
           updateAdminView();
           showToast("🔓 컨설턴트 로그인이 정상 처리되었습니다. 관리 도구가 해제되었습니다.", "success");
@@ -1162,6 +1191,34 @@
         isAdminLoggedIn = false;
         updateAdminView();
         showToast("🔒 안전하게 로그아웃 되어 관리 도구가 잠겼습니다.", "info");
+      });
+
+      // [NEW] Admin Panel: Change Password Action
+      document.getElementById('btn-change-password').addEventListener('click', () => {
+        const newPassword = document.getElementById('admin-new-password').value;
+        const confirmPassword = document.getElementById('admin-new-password-confirm').value;
+
+        if (!newPassword) {
+          showToast("새로 지정할 비밀번호를 먼저 입력해 주세요.", "error");
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          showToast("입력한 두 비밀번호가 서로 일치하지 않습니다. 다시 입력해 주세요.", "error");
+          return;
+        }
+
+        // Apply new password
+        adminPassword = newPassword;
+        document.getElementById('admin-new-password').value = '';
+        document.getElementById('admin-new-password-confirm').value = '';
+
+        // Dynamic Hint Text & UI Update
+        updateAdminView();
+
+        // Push System Log
+        pushLog("SYSTEM", "INTERNAL", "SECURITY_UPDATE", `관리자 패널 비밀번호가 신규 정보로 안전하게 갱신되었습니다.`);
+        showToast("🔑 관리자 비밀번호가 성공적으로 변경되었습니다!", "success");
       });
 
       // Date Field Change trigger
