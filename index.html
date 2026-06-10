@@ -846,7 +846,8 @@
                 const dayOfWeek = new Date(currentCalendarYear, currentCalendarMonth, day).getDay();
 
                 const btn = document.createElement('button');
-                btn.className = "p-2 sm:p-3 relative rounded-xl hover:bg-slate-100 transition-all font-semibold flex flex-col items-center justify-between min-h-[50px] aspect-square focus:outline-none";
+                // 기존 aspect-square를 걷어내고 이름 리스트가 넉넉히 출력되도록 세로 최소높이(min-h-[90px])를 확보합니다.
+                btn.className = "p-1.5 sm:p-2 relative rounded-xl hover:bg-slate-100 transition-all font-semibold flex flex-col items-stretch justify-start min-h-[90px] w-full focus:outline-none border border-slate-100";
 
                 if (dayOfWeek === 0) btn.className += " text-red-500";
                 else if (dayOfWeek === 6) btn.className += " text-blue-500";
@@ -869,43 +870,61 @@
                     btn.disabled = true;
                 }
 
-                // 해당 날짜 총 예약수 확인
-                const dailyBookingsCount = bookings.filter(b => b.date === dayString).length;
+                // 현재 일자가 선택된 상태인지 정의
+                const isSelected = (dayString === selectedDate && !isBlocked);
 
-                // 일자 출력
+                // 선택된 날짜 하이라이팅
+                if (isSelected) {
+                    btn.className = btn.className.replace(/text-red-500|text-blue-500|text-slate-700/g, '');
+                    btn.className += " bg-brand-600 text-white hover:bg-brand-700 shadow-md ring-2 ring-brand-500/30";
+                }
+
+                // 일자 출력 (상단 좌측 정렬)
                 const dayNumSpan = document.createElement('span');
+                dayNumSpan.className = "text-xs font-bold mb-1 block self-start";
                 dayNumSpan.innerText = day;
                 btn.appendChild(dayNumSpan);
 
-                // 일별 예약 존재시 미니 인디케이터 도트 표시
-                if (dailyBookingsCount > 0 && !isBlocked) {
-                    const dotContainer = document.createElement('div');
-                    dotContainer.className = "flex space-x-0.5 mt-1";
+                // 해당 날짜 예약자 정보 조회 후 시간 순으로 정렬
+                const dayBookings = bookings.filter(b => b.date === dayString);
+                dayBookings.sort((a, b) => a.slotTime.localeCompare(b.slotTime));
+
+                // 예약자 이름 리스트 직접 렌더링
+                if (dayBookings.length > 0 && !isBlocked) {
+                    const namesContainer = document.createElement('div');
+                    namesContainer.className = "w-full flex flex-col gap-1 text-[10px] text-left mt-auto";
                     
-                    for (let d = 0; d < Math.min(dailyBookingsCount, 3); d++) {
-                        const dot = document.createElement('span');
-                        dot.className = "w-1 h-1 bg-brand-500 rounded-full inline-block";
-                        dotContainer.appendChild(dot);
-                    }
-                    btn.appendChild(dotContainer);
+                    dayBookings.forEach(b => {
+                        const nameBadge = document.createElement('div');
+                        
+                        // 날짜 버튼 선택 유무에 따라 반투명/브랜드 색상 테마 분기 적용
+                        const badgeStyle = isSelected 
+                            ? "bg-white/20 text-white border border-white/25" 
+                            : "bg-slate-50 text-slate-700 border border-slate-200/60";
+                        
+                        nameBadge.className = `px-1 py-0.5 rounded-lg text-[9px] font-bold truncate flex items-center justify-between ${badgeStyle}`;
+                        
+                        // "14:00 ~ 14:30" 형식에서 앞 시간 "14:00"만 축약
+                        const startTime = b.slotTime.split(' ')[0];
+                        nameBadge.innerHTML = `
+                            <span class="opacity-75 mr-1 font-medium">${startTime}</span>
+                            <span class="truncate">${b.participantName}</span>
+                        `;
+                        namesContainer.appendChild(nameBadge);
+                    });
+                    btn.appendChild(namesContainer);
                 } else {
-                    const emptyIndicator = document.createElement('div');
-                    emptyIndicator.className = "h-1";
-                    btn.appendChild(emptyIndicator);
+                    const emptySpace = document.createElement('div');
+                    emptySpace.className = "flex-grow";
+                    btn.appendChild(emptySpace);
                 }
 
-                // 차단 상태 텍스트
+                // 차단 상태 텍스트 출력
                 if (isBlocked) {
                     const blockTag = document.createElement('span');
-                    blockTag.className = "text-[7px] text-red-500 bg-white font-extrabold px-1 rounded border border-red-200 mt-1 scale-90";
+                    blockTag.className = "text-[7px] text-red-500 bg-white font-extrabold px-1 py-0.5 rounded border border-red-200 mt-auto self-center";
                     blockTag.innerText = "차단됨";
                     btn.appendChild(blockTag);
-                }
-
-                // 선택된 날짜 하이라이팅
-                if (dayString === selectedDate && !isBlocked) {
-                    btn.className = btn.className.replace(/text-red-500|text-blue-500|text-slate-700/g, '');
-                    btn.className += " bg-brand-600 text-white hover:bg-brand-700 shadow-md ring-2 ring-brand-500/30";
                 }
 
                 btn.onclick = () => selectCalendarDate(dayString);
