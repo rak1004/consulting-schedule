@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>소사벌연구TF 코칭 일정 예약 및 공유 시스템</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons for premium look -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
@@ -32,7 +30,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- Navigation Bar -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -47,24 +44,21 @@
         <a href="#admin-panel-section" id="btn-nav-admin" class="px-3 py-2 text-sm font-medium text-rose-600 hover:text-rose-700 bg-rose-50 rounded-md transition-colors flex items-center gap-1"><i data-lucide="shield-alert" class="w-4 h-4"></i> 컨설턴트 관리 도구</a>
         <a href="#booking-section" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 rounded-md transition-colors">일정 예약하기</a>
         <a href="#schedule-section" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 rounded-md transition-colors">전체 일정표</a>
-        <a href="#notification-section" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 rounded-md transition-colors">알림 히스토리</a>
+        <a href="#gallery-section" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 rounded-md transition-colors">공유 갤러리</a>
       </nav>
       <div class="flex items-center space-x-2">
         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
           <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>
-          시스템 정상 작동 중
+          실시간 클라우드 동기화 중
         </span>
       </div>
     </div>
   </header>
 
-  <!-- Notification Toast Container -->
   <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-  <!-- Main Content -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
     
-    <!-- Hero / Summary Banner -->
     <section class="bg-gradient-to-r from-indigo-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.15),transparent_50%)]"></div>
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
@@ -76,8 +70,7 @@
             1대1 맞춤형 밀착 코칭 일정을 수립하세요.
           </h2>
           <p class="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
-            오늘부터 앞으로 1달간, 연구원 대상의 맞춤 코칭이 진행됩니다. 
-            인원당 <span class="text-amber-400 font-semibold">최소 2회에서 최대 3회</span>의 예약을 완료해 주세요.
+            연구원 대상의 맞춤 코칭이 진행됩니다. 인원당 <span class="text-amber-400 font-semibold">최소 2회에서 최대 3회</span>의 예약을 완료해 주세요.
           </p>
           <div class="flex flex-wrap gap-4 pt-2">
             <div class="flex items-center space-x-2 text-xs sm:text-sm text-slate-300">
@@ -85,8 +78,8 @@
               <span>운영 시간: 매일 14:00 ~ 16:30 (회당 30분)</span>
             </div>
             <div class="flex items-center space-x-2 text-xs sm:text-sm text-slate-300">
-              <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
-              <span>정원: 선착순 사전 예약제</span>
+              <i data-lucide="database" class="w-4 h-4 text-indigo-400"></i>
+              <span>상태 보존: 실시간 클라우드 백업 가동 중</span>
             </div>
           </div>
         </div>
@@ -97,7 +90,7 @@
           <div class="space-y-3">
             <div>
               <div class="flex justify-between text-xs text-slate-300 mb-1">
-                <span>전체 목표 달성률 (목표치 30회 기준)</span>
+                <span>전체 목표 달성률</span>
                 <span id="progress-percent" class="font-bold text-amber-400">0%</span>
               </div>
               <div class="w-full bg-white/20 rounded-full h-2">
@@ -119,7 +112,6 @@
       </div>
     </section>
 
-    <!-- Consultant Exclusive: Control Panel -->
     <section id="admin-panel-section" class="hidden bg-rose-50/50 border border-rose-100 rounded-2xl p-6 space-y-6 shadow-sm transition-all duration-300">
       <div class="flex items-start justify-between border-b border-rose-100 pb-4">
         <div>
@@ -129,15 +121,13 @@
           <h3 class="text-lg font-bold text-slate-900 mt-1 flex items-center gap-2">
             ⚙️ 컨설턴트 일정 및 예약 통제 도구
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">코칭 비활성화 날짜 지정 및 코칭 대상자(참가 연구원) 목록을 직접 관리하세요.</p>
+          <p class="text-xs text-slate-500 mt-0.5">코칭 비활성화 날짜 지정 및 코칭 대상자 목록을 직접 관리하세요.</p>
         </div>
-        <!-- Logout Button (Initially Hidden) -->
         <button id="btn-admin-logout" class="hidden text-xs bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
           <i data-lucide="log-out" class="w-3.5 h-3.5"></i> 관리자 로그아웃
         </button>
       </div>
 
-      <!-- 1) Login Lock View -->
       <div id="admin-login-view" class="py-8 flex flex-col items-center justify-center max-w-sm mx-auto space-y-4 text-center">
         <div class="p-3.5 bg-rose-100 text-rose-600 rounded-full">
           <i data-lucide="lock" class="w-8 h-8"></i>
@@ -149,18 +139,13 @@
         <div class="w-full space-y-2">
           <div class="flex gap-2">
             <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요 (기본: 1234)" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-rose-500 focus:border-rose-500">
-            <button id="btn-admin-login" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap">
-              로그인
-            </button>
+            <button id="btn-admin-login" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 rounded-lg transition-colors flex items-center gap-1 whitespace-nowrap">로그인</button>
           </div>
-          <p class="text-[10px] text-slate-400 admin-password-hint">※ 시스템 안내 : 테스트 목적으로 설정된 암호는 <b class="text-slate-600 font-bold">1234</b> 입니다.</p>
+          <p class="text-[10px] text-slate-400 admin-password-hint">※ 시스템 안내 : 테스트용 암호는 <b class="text-slate-600 font-bold">1234</b> 입니다.</p>
         </div>
       </div>
 
-      <!-- 2) Real Controls View (Initially Hidden) -->
       <div id="admin-tools-view" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- Target Users (Coaching Candidates) Management Card -->
         <div class="lg:col-span-4 bg-white border border-rose-100 rounded-xl p-5 space-y-4 flex flex-col">
           <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
             <i data-lucide="users" class="text-indigo-600 w-4 h-4"></i> 코칭 대상자 명단 관리
@@ -170,25 +155,19 @@
               <label class="block text-xs font-bold text-slate-600">신규 연구원 추가</label>
               <div class="flex gap-1.5">
                 <input type="text" id="admin-new-user-name" placeholder="연구원 성명 입력" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500">
-                <button id="btn-add-user" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors whitespace-nowrap flex items-center gap-0.5">
-                  <i data-lucide="plus" class="w-3 h-3"></i> 추가
-                </button>
+                <button id="btn-add-user" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors flex items-center gap-0.5"><i data-lucide="plus" class="w-3 h-3"></i> 추가</button>
               </div>
             </div>
-            
             <div class="mt-2">
               <label class="block text-xs font-bold text-slate-600 mb-1.5 flex justify-between">
-                <span>등록된 명단 <span class="text-slate-400 font-normal">(클릭 시 명단 삭제)</span></span>
+                <span>등록된 명단 <span class="text-slate-400 font-normal">(클릭 시 삭제)</span></span>
                 <span id="registered-user-count" class="text-indigo-600 font-semibold font-mono">0명</span>
               </label>
-              <div id="admin-users-list" class="flex flex-wrap gap-1.5 max-h-[140px] overflow-y-auto border border-slate-100 rounded-lg p-2.5 bg-slate-50/50">
-                <!-- Dynamically populated list tags -->
-              </div>
+              <div id="admin-users-list" class="flex flex-wrap gap-1.5 max-h-[140px] overflow-y-auto border border-slate-100 rounded-lg p-2.5 bg-slate-50/50"></div>
             </div>
           </div>
         </div>
 
-        <!-- Add Blocked Date Card -->
         <div class="lg:col-span-4 bg-white border border-rose-100 rounded-xl p-5 space-y-4">
           <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
             <i data-lucide="calendar-off" class="text-rose-500 w-4 h-4"></i> 특정 날짜 전체 차단하기
@@ -201,29 +180,19 @@
             <button id="btn-add-block" class="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
               <i data-lucide="lock" class="w-4 h-4"></i> 해당일 전체 차단 설정
             </button>
-            <p class="text-[11px] text-slate-400 leading-tight">
-              ※ 예약이 잡혀 있는 날짜를 강제로 차단할 경우, 기존 예약들은 일괄 자동 취소되며 안내 메일이 가상 발송됩니다.
-            </p>
           </div>
         </div>
 
-        <!-- Blocked Dates List -->
         <div class="lg:col-span-4 bg-white border border-rose-100 rounded-xl p-5 flex flex-col justify-between space-y-4">
           <div>
             <h4 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between">
               <span class="flex items-center gap-1.5"><i data-lucide="list" class="text-slate-500 w-4 h-4"></i> 실시간 예약 차단/휴무일 목록</span>
-              <span id="blocked-count" class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold">0개 지정됨</span>
+              <span id="blocked-count" class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold">0개</span>
             </h4>
-            <div id="blocked-dates-list" class="flex flex-wrap gap-2 max-h-[140px] overflow-y-auto pr-2">
-              <!-- Rendered dynamically -->
-            </div>
+            <div id="blocked-dates-list" class="flex flex-wrap gap-2 max-h-[140px] overflow-y-auto pr-2"></div>
           </div>
-          <p class="text-[11px] text-slate-500 pt-4 border-t border-slate-100">
-            * 차단 목록 우측의 <b>'X'</b> 단추를 누르면 차단이 즉시 해제됩니다.
-          </p>
         </div>
 
-        <!-- Change Admin Password Card (Full width row inside admin tools) -->
         <div class="lg:col-span-12 bg-white border border-rose-100 rounded-xl p-5 space-y-4">
           <h4 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
             <i data-lucide="key-round" class="text-rose-500 w-4 h-4"></i> 관리자 비밀번호 변경
@@ -238,17 +207,14 @@
               <input type="password" id="admin-new-password-confirm" placeholder="새 비밀번호 재입력" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-rose-500 focus:border-rose-500">
             </div>
             <button id="btn-change-password" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
-              <i data-lucide="check-square" class="w-4 h-4"></i> 새로운 비밀번호 변경 적용
+              <i data-lucide="check-square" class="w-4 h-4"></i> 비밀번호 변경 적용
             </button>
           </div>
-          <p class="text-[10px] text-slate-400 admin-password-hint">※ 시스템 안내 : 현재 비밀번호는 <b class="text-slate-600 font-bold">1234</b> 입니다.</p>
         </div>
       </div>
     </section>
 
-    <!-- Main Scheduler Layout: Left Form, Right Fast View -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" id="booking-section">
-      <!-- 1. Booking Form Column -->
       <section class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6">
         <div class="border-b border-slate-100 pb-4">
           <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2">
@@ -258,1568 +224,587 @@
         </div>
 
         <form id="booking-form" class="space-y-5">
-          <!-- User Selection -->
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1.5 flex justify-between">
               <span>코칭 대상자 이름 <span class="text-red-500">*</span></span>
               <span id="user-booking-count" class="text-xs text-indigo-600 font-medium"></span>
             </label>
-            <select id="user-select" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-2.5 transition-colors">
+            <select id="user-select" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 p-2.5">
               <option value="" disabled selected>본인의 이름을 선택해주세요</option>
-              <!-- Will be loaded dynamically via JS -->
             </select>
           </div>
 
-          <!-- Date Picker -->
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-              희망 날짜 선택 <span class="text-red-500">*</span>
-            </label>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">희망 날짜 선택 <span class="text-red-500">*</span></label>
             <div class="relative">
-              <input type="date" id="booking-date" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 p-2.5 pl-10 transition-colors">
+              <input type="date" id="booking-date" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-lg focus:ring-2 focus:ring-indigo-500 p-2.5 pl-10">
               <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
                 <i data-lucide="calendar" class="w-4 h-4"></i>
               </div>
             </div>
-            <p class="text-xs text-slate-400 mt-1" id="date-limit-hint">오늘부터 1달 이내 주말 제외 신청 가능</p>
           </div>
 
-          <!-- Time slot Selection Grid -->
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-2">
-              희망 시간 선택 (30분 단위) <span class="text-red-500">*</span>
-            </label>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">희망 시간 선택 <span class="text-red-500">*</span></label>
             <div id="time-slot-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              <!-- Dynamically rendered based on selected date availability -->
-              <div class="col-span-full py-4 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-lg">
-                날짜를 먼저 선택하시면 예약 가능한 시간대가 표시됩니다.
-              </div>
+              <div class="col-span-full py-4 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-lg">날짜를 먼저 선택해주세요.</div>
             </div>
           </div>
 
-          <!-- Alert Option (Mock Contact Input) -->
           <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
-                <i data-lucide="bell-ring" class="w-4 h-4 text-indigo-500"></i> 스마트 리마인더 설정
-              </span>
-              <span class="text-[10px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-medium">자동 연동</span>
-            </div>
-            <div class="grid grid-cols-1 gap-2">
-              <input type="email" id="user-email" placeholder="알림을 수신할 이메일 주소" class="w-full bg-white border border-slate-300 text-slate-900 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500" required>
-              <input type="tel" id="user-phone" placeholder="휴대폰 번호 (예: 010-1234-5678)" class="w-full bg-white border border-slate-300 text-slate-900 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500" required>
-            </div>
+            <label class="block text-xs font-bold text-slate-700">연락처 정보 수집 (필수)</label>
+            <input type="email" id="user-email" placeholder="이메일 주소" class="w-full bg-white border border-slate-300 text-slate-900 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500" required>
+            <input type="tel" id="user-phone" placeholder="휴대폰 번호 (예: 010-1234-5678)" class="w-full bg-white border border-slate-300 text-slate-900 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500" required>
           </div>
 
-          <!-- [NEW] Reservation Password Field for Edit/Delete Protection -->
           <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/50 space-y-1">
             <label class="block text-xs font-bold text-slate-700 flex justify-between items-center">
               <span>예약 비밀번호 설정 <span class="text-red-500">*</span></span>
-              <span class="text-[10px] font-normal text-slate-400">수정/삭제 시 확인용</span>
             </label>
-            <div class="relative">
-              <input type="password" id="user-booking-pwd" required pattern="[0-9]{4}" maxlength="4" placeholder="비밀번호 숫자 4자리 입력" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg p-2 focus:ring-1 focus:ring-indigo-500 pl-8">
-              <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 pointer-events-none text-slate-400">
-                <i data-lucide="key" class="w-4 h-4"></i>
-              </div>
-            </div>
+            <input type="password" id="user-booking-pwd" required pattern="[0-9]{4}" maxlength="4" placeholder="비밀번호 숫자 4자리" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg p-2 pl-3">
           </div>
 
-          <!-- Submit Button -->
           <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm px-5 py-3 transition-colors flex items-center justify-center gap-2 shadow-md">
             <i data-lucide="check" class="w-4 h-4"></i> 일정 예약 확정하기
           </button>
         </form>
       </section>
 
-      <!-- 2. Interactive Calendar View & Rules -->
       <div class="lg:col-span-7 flex flex-col space-y-6">
-        <!-- Dashboard Guidelines -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-          <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-            <i data-lucide="info" class="text-amber-500 w-4 h-4"></i> 코칭 참여 유의 사항
-          </h3>
-          <ul class="text-xs text-slate-600 space-y-2 list-disc pl-4 leading-relaxed">
-            <li><b>인원당 예약 횟수:</b> 모든 대상자는 최적의 코칭 효과를 위해 기간 내 <b>최소 2회에서 최대 3회</b>를 필히 예약해 주셔야 합니다.</li>
-            <li><b>예약 시간 준수:</b> 회당 정확히 30분 동안 압축적으로 진행되오니 예약 시간 5분 전까지 대기해주시기 바랍니다.</li>
-            <li><b>예약 관리 편의성:</b> 예약한 내역을 변경 및 삭제하시려면, 등록 시 지정했던 <b>개인 예약 비밀번호 (4자리)</b>를 사용해야 합니다.</li>
-            <li class="text-rose-600 font-semibold"><b>컨설턴트 차단일:</b> 컨설턴트 일정(공식 외근 등)으로 차단된 날은 클릭 및 일정 선택이 제한됩니다.</li>
-          </ul>
-        </section>
-
-        <!-- Dynamic Micro-Calendar Overview -->
         <section class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex-grow flex flex-col">
           <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
-            <div>
-              <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
-                <i data-lucide="calendar" class="text-indigo-600"></i> 미니 달력 현황 
-              </h3>
-              <p class="text-xs text-slate-500 mt-0.5">날짜별 예약된 세션 수를 한눈에 파악하세요.</p>
-            </div>
+            <h3 class="text-base font-bold text-slate-950 flex items-center gap-2"><i data-lucide="calendar" class="text-indigo-600"></i> 미니 달력 현황</h3>
             <div class="flex items-center space-x-1">
-              <button id="prev-month" class="p-1 hover:bg-slate-100 rounded transition-colors text-slate-600"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+              <button id="prev-month" class="p-1 hover:bg-slate-100 rounded text-slate-600"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
               <span id="calendar-month-title" class="text-sm font-semibold text-slate-800 min-w-[80px] text-center"></span>
-              <button id="next-month" class="p-1 hover:bg-slate-100 rounded transition-colors text-slate-600"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+              <button id="next-month" class="p-1 hover:bg-slate-100 rounded text-slate-600"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
             </div>
           </div>
-
-          <!-- Calendar Days Grid -->
           <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-slate-500 mb-2">
             <div class="text-red-500">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="text-blue-500">토</div>
           </div>
-          <div id="calendar-grid" class="grid grid-cols-7 gap-1 flex-grow">
-            <!-- Calendar cells will be injected here dynamically -->
-          </div>
-          
-          <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap justify-end gap-x-4 gap-y-1 text-[11px] text-slate-500">
-            <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-slate-100 rounded-sm inline-block border border-slate-200"></span> 예약 없음</div>
-            <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-indigo-100 rounded-sm inline-block"></span> 1~2개 예약</div>
-            <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-indigo-500 rounded-sm inline-block"></span> 3개 이상 예약</div>
-            <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-rose-150 border border-rose-300 rounded-sm inline-block bg-rose-50"></span> 🔒 예약 불가/차단</div>
-          </div>
+          <div id="calendar-grid" class="grid grid-cols-7 gap-1 flex-grow"></div>
         </section>
       </div>
     </div>
 
-    <!-- 3. Overall Detailed Schedule Table -->
     <section class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6" id="schedule-section">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-        <div>
-          <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2">
-            <i data-lucide="list-filter" class="text-indigo-600"></i> 코칭 전체 일정 리스트 및 필터
-          </h3>
-          <p class="text-xs text-slate-500 mt-1">예약이 완료된 일정표입니다. 누구나 현재 일정을 투명하게 파악하고 수정/삭제 조율할 수 있습니다.</p>
-        </div>
-        <!-- Filters -->
+        <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2"><i data-lucide="list-filter" class="text-indigo-600"></i> 코칭 전체 일정 리스트</h3>
         <div class="flex flex-wrap gap-2 items-center">
-          <span class="text-xs text-slate-500 font-medium">필터링:</span>
-          <select id="filter-user" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500">
+          <select id="filter-user" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2">
             <option value="">모든 대상자</option>
-            <!-- Injected by JS -->
           </select>
-          <input type="date" id="filter-date" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500">
-          <button id="reset-filter" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs rounded-lg transition-colors flex items-center gap-1">
-            <i data-lucide="refresh-cw" class="w-3 h-3"></i> 초기화
-          </button>
+          <input type="date" id="filter-date" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2">
+          <button id="reset-filter" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs rounded-lg transition-colors"><i data-lucide="refresh-cw" class="w-3 h-3"></i></button>
         </div>
       </div>
-
-      <!-- Schedule Table -->
       <div class="overflow-x-auto rounded-xl border border-slate-100">
         <table class="w-full text-sm text-left text-slate-600">
-          <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-100">
+          <thead class="text-xs text-slate-700 bg-slate-50 border-b border-slate-100">
             <tr>
-              <th scope="col" class="px-6 py-3.5">번호</th>
-              <th scope="col" class="px-6 py-3.5">대상자 이름</th>
-              <th scope="col" class="px-6 py-3.5">예약 날짜</th>
-              <th scope="col" class="px-6 py-3.5">시간대</th>
-              <th scope="col" class="px-6 py-3.5">알림 및 안내 채널</th>
-              <th scope="col" class="px-6 py-3.5 text-center">관리 조작</th>
+              <th class="px-6 py-3.5">번호</th>
+              <th class="px-6 py-3.5">대상자 이름</th>
+              <th class="px-6 py-3.5">예약 날짜</th>
+              <th class="px-6 py-3.5">시간대</th>
+              <th class="px-6 py-3.5">연락처 정보</th>
+              <th class="px-6 py-3.5 text-center">관리 조작</th>
             </tr>
           </thead>
-          <tbody id="schedule-tbody" class="divide-y divide-slate-100">
-            <!-- Dynamic Schedule Rows -->
-          </tbody>
+          <tbody id="schedule-tbody" class="divide-y divide-slate-100"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- 4. Interactive Simulation Log: Automated Reminders -->
-    <section class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6" id="notification-section">
-      <div class="border-b border-slate-100 pb-4">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2">
-              <i data-lucide="mail-warning" class="text-indigo-600"></i> 메일 및 알림 발송 기록 시뮬레이션
-            </h3>
-            <p class="text-xs text-slate-500 mt-1">예약 확정 및 코칭 시작 전에 전송되는 실제 알림 메시지 발송 히스토리를 가상으로 확인합니다.</p>
-          </div>
-          <span class="inline-flex items-center px-2 py-1 rounded bg-indigo-50 text-indigo-700 text-xs font-bold">
-            <i data-lucide="server" class="w-3.5 h-3.5 mr-1 text-indigo-500"></i> 알림 시스템 정상 가동
-          </span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Interactive Trigger Control -->
-        <div class="bg-slate-50 rounded-xl p-5 border border-slate-100 flex flex-col justify-between space-y-4">
-          <div>
-            <span class="text-xs font-bold text-indigo-600 tracking-wide uppercase">자동화 시뮬레이터</span>
-            <h4 class="text-sm font-bold text-slate-800 mt-1">강제 리마인더 테스트</h4>
-            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-              등록 완료 시 <b>즉시 메일 발송</b> 기능 외에도, 특정 예약 건에 대해 "코칭 개시 직전 리마인더 알림"이 어떻게 메일과 문자 메시지로 표현되는지 임의로 테스트 발송 해볼 수 있습니다.
-            </p>
-          </div>
-          <div class="space-y-2">
-            <label class="block text-xs font-semibold text-slate-700">대상 일정 선택</label>
-            <select id="trigger-log-select" class="w-full bg-white border border-slate-300 text-slate-800 text-xs rounded-lg p-2 focus:ring-1 focus:ring-indigo-500">
-              <option value="" disabled selected>테스트할 일정을 선택하세요</option>
-              <!-- Will be loaded dynamically via JS -->
-            </select>
-            <button id="btn-trigger-notification" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-1.5">
-              <i data-lucide="send" class="w-3.5 h-3.5"></i> 리마인더 알림 메일 임의 발송
-            </button>
-          </div>
-        </div>
-
-        <!-- Simulated Notification Logs Console -->
-        <div class="md:col-span-2 bg-slate-950 text-slate-200 rounded-xl p-5 font-mono text-xs flex flex-col h-[280px]">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
-            <div class="flex items-center space-x-1.5 text-slate-400">
-              <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-              <span class="ml-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mail / Message Notification Dispatcher</span>
-            </div>
-            <button id="btn-clear-logs" class="text-[10px] text-slate-500 hover:text-slate-300 flex items-center gap-1">
-              <i data-lucide="trash-2" class="w-3 h-3"></i> 로그 비우기
-            </button>
-          </div>
-          <div id="log-console-content" class="flex-grow overflow-y-auto space-y-2.5 pr-2">
-            <!-- Simulated Logs injected here -->
-            <p class="text-slate-500 italic">[시스템 알림] 현재 수집된 알림 내역이 비어 있습니다. 코칭 일정을 예약하면 이 곳에 알림 로그가 실시간 출력됩니다.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. Consulting Album & Post-Share (Activities Gallery) -->
     <section class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6" id="gallery-section">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-        <div>
-          <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2">
-            <i data-lucide="image" class="text-indigo-600"></i> 코칭 생생한 현장 공유 갤러리
-          </h3>
-          <p class="text-xs text-slate-500 mt-1">코칭 후 현장 사진 및 자문 자료를 서로 탑재하고 가치를 공유하는 공간입니다.</p>
-        </div>
-        <!-- Upload Modal Button -->
-        <button id="btn-open-upload" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-950 flex items-center gap-2"><i data-lucide="image" class="text-indigo-600"></i> 공유 갤러리</h3>
+        <button id="btn-open-upload" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
           <i data-lucide="plus" class="w-4 h-4"></i> 사진/자료 업로드하기
         </button>
       </div>
-
-      <!-- Gallery Grid -->
-      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Will be loaded dynamically via JS -->
-      </div>
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
-
   </main>
 
-  <!-- Upload Modal Background Layer -->
   <div id="upload-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-lg overflow-hidden transform transition-all">
-      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-        <h3 class="text-base font-bold text-slate-950 flex items-center gap-1.5">
-          <i data-lucide="image-plus" class="text-indigo-600"></i> 현장 사진 및 피드백 탑재
-        </h3>
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-lg overflow-hidden p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-base font-bold text-slate-950 flex items-center gap-1.5"><i data-lucide="image-plus" class="text-indigo-600"></i> 사진 및 자료 탑재</h3>
         <button id="btn-close-upload" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <form id="upload-form" class="p-5 space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">작성자 이름 *</label>
-          <input type="text" id="upload-author" placeholder="예: 김민지 코치, 홍길동 대상자" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500" required>
+      <form id="upload-form" class="space-y-4">
+        <input type="text" id="upload-author" placeholder="작성자 이름" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5" required>
+        <input type="date" id="upload-date" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5" required>
+        <textarea id="upload-desc" rows="3" placeholder="내용을 입력하세요." class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5" required></textarea>
+        <div class="grid grid-cols-3 gap-2">
+          <label class="border border-slate-200 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 text-center gap-1">
+            <input type="radio" name="photoPreset" value="meeting1" checked class="accent-indigo-600">
+            <span class="text-[10px] font-bold text-slate-700">전략 미팅 룸</span>
+          </label>
+          <label class="border border-slate-200 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 text-center gap-1">
+            <input type="radio" name="photoPreset" value="meeting2" class="accent-indigo-600">
+            <span class="text-[10px] font-bold text-slate-700">원격 비대면</span>
+          </label>
+          <label class="border border-slate-200 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 text-center gap-1">
+            <input type="radio" name="photoPreset" value="meeting3" class="accent-indigo-600">
+            <span class="text-[10px] font-bold text-slate-700">멘토링 현장</span>
+          </label>
         </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5 font-medium">코칭 일자 *</label>
-          <input type="date" id="upload-date" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500" required>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">설명 및 피드백 *</label>
-          <textarea id="upload-desc" rows="3" placeholder="오늘 코칭에서 어떤 유의미한 피드백이 있었는지 간단히 소감을 적어주세요." class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500" required></textarea>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">대표 사진 유형 (가상 이미지 프리셋)</label>
-          <div class="grid grid-cols-3 gap-2" id="preset-selector">
-            <label class="border border-slate-200 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 text-center gap-1 transition-colors">
-              <input type="radio" name="photoPreset" value="meeting1" checked class="accent-indigo-600">
-              <span class="text-[10px] font-bold text-slate-700">전략 미팅 룸</span>
-            </label>
-            <label class="border border-slate-200 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 text-center gap-1 transition-colors">
-              <input type="radio" name="photoPreset" value="meeting2" class="accent-indigo-600">
-              <span class="text-[10px] font-bold text-slate-700">원격 비대면</span>
-            </label>
-            <label class="border border-slate-200 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 text-center gap-1 transition-colors">
-              <input type="radio" name="photoPreset" value="meeting3" class="accent-indigo-600">
-              <span class="text-[10px] font-bold text-slate-700">멘토링 현장</span>
-            </label>
-          </div>
-        </div>
-        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-1.5">
-          <i data-lucide="check" class="w-4 h-4"></i> 게시물 등록 완료
-        </button>
+        <button type="submit" class="w-full bg-indigo-600 text-white text-sm font-semibold py-3 rounded-lg">등록 완료</button>
       </form>
     </div>
   </div>
 
-  <!-- [NEW] Password Auth Modal for Edit/Delete Protection -->
   <div id="auth-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-sm overflow-hidden transform transition-all p-6 space-y-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-sm p-6 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-          <i data-lucide="shield-check" class="text-indigo-600 w-4 h-4"></i> 본인 확인 인증
-        </h3>
+        <h3 class="text-sm font-bold text-slate-900"><i data-lucide="shield-check" class="text-indigo-600 w-4 h-4"></i> 본인 확인 인증</h3>
         <button type="button" class="btn-close-auth text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
-      <div class="space-y-3">
-        <p class="text-xs text-slate-500 leading-normal">
-          이 예약 사항을 변경하거나 삭제하시려면 예약 등록 시 설정하셨던 <b class="text-slate-800">4자리 예약 비밀번호</b>를 입력하세요.
-        </p>
-        <div class="space-y-1">
-          <input type="password" id="auth-input-pwd" maxlength="4" placeholder="비밀번호 4자리" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500 text-center font-bold tracking-widest">
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-2 pt-2">
-        <button id="btn-auth-confirm-edit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1">
-          <i data-lucide="edit" class="w-3.5 h-3.5"></i> 수정 진행
-        </button>
-        <button id="btn-auth-confirm-delete" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1">
-          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> 즉시 삭제
-        </button>
+      <p class="text-xs text-slate-500">예약 시 설정했던 <b>4자리 비밀번호</b>를 입력하세요.</p>
+      <input type="password" id="auth-input-pwd" maxlength="4" class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 text-center font-bold tracking-widest">
+      <div class="grid grid-cols-2 gap-2">
+        <button id="btn-auth-confirm-edit" class="bg-indigo-600 text-white text-xs font-semibold py-2.5 rounded-lg">수정 진행</button>
+        <button id="btn-auth-confirm-delete" class="bg-rose-600 text-white text-xs font-semibold py-2.5 rounded-lg">즉시 삭제</button>
       </div>
     </div>
   </div>
 
-  <!-- [NEW] Edit Reservation Form Modal -->
   <div id="edit-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md overflow-hidden transform transition-all p-6 space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-          <i data-lucide="calendar-range" class="text-indigo-600 w-4 h-4"></i> 코칭 예약 내역 변경
-        </h3>
-        <button type="button" class="btn-close-edit text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md p-6 space-y-4">
+      <h3 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">코칭 예약 내역 변경</h3>
       <form id="edit-form" class="space-y-4">
         <input type="hidden" id="edit-booking-id">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">대상 연구원</label>
-          <input type="text" id="edit-user-display" class="w-full bg-slate-100 border border-slate-200 text-slate-500 text-sm rounded-lg p-2.5 cursor-not-allowed font-semibold" readonly>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">코칭 날짜 선택</label>
-          <input type="date" id="edit-booking-date" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">희망 시간 선택 (30분 단위)</label>
-          <div id="edit-time-slot-container" class="grid grid-cols-2 gap-2">
-            <!-- Loaded dynamically in JS -->
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">이메일 주소</label>
-            <input type="email" id="edit-user-email" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">연락처</label>
-            <input type="tel" id="edit-user-phone" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-xs rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500">
-          </div>
-        </div>
-        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
-          <i data-lucide="save" class="w-4 h-4"></i> 예약 내역 저장 및 반영
-        </button>
+        <input type="text" id="edit-user-display" class="w-full bg-slate-100 border text-slate-500 text-sm rounded-lg p-2.5" readonly>
+        <input type="date" id="edit-booking-date" required class="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg p-2.5">
+        <div id="edit-time-slot-container" class="grid grid-cols-2 gap-2"></div>
+        <input type="email" id="edit-user-email" required class="w-full bg-slate-50 border border-slate-300 text-xs rounded-lg p-2.5">
+        <input type="tel" id="edit-user-phone" required class="w-full bg-slate-50 border border-slate-300 text-xs rounded-lg p-2.5">
+        <button type="submit" class="w-full bg-indigo-600 text-white text-xs font-bold py-3 rounded-lg">예약 내역 저장</button>
       </form>
     </div>
   </div>
 
-  <!-- [NEW] Custom Confirm Modal (Replacing dangerous window.confirm) -->
   <div id="confirm-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-sm overflow-hidden transform transition-all p-6 space-y-4">
-      <div class="flex items-center gap-2.5 text-amber-500 border-b border-slate-100 pb-3">
-        <i data-lucide="alert-circle" class="w-6 h-6"></i>
-        <h3 id="confirm-title" class="text-sm font-bold text-slate-900">알림 메시지</h3>
-      </div>
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-sm p-6 space-y-4">
       <p id="confirm-msg" class="text-xs text-slate-600 leading-relaxed"></p>
-      <div class="flex justify-end gap-2 pt-2">
-        <button id="btn-confirm-cancel" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold py-2 px-4 rounded-lg transition-colors">
-          취소
-        </button>
-        <button id="btn-confirm-ok" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2 px-4 rounded-lg transition-colors">
-          확인 및 실행
-        </button>
+      <div class="flex justify-end gap-2">
+        <button id="btn-confirm-cancel" class="bg-slate-100 text-slate-600 text-xs font-semibold py-2 px-4 rounded-lg">취소</button>
+        <button id="btn-confirm-ok" class="bg-indigo-600 text-white text-xs font-semibold py-2 px-4 rounded-lg">확인</button>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
-      <p class="font-semibold text-slate-300">1대1 맞춤 코칭 자동 매칭 및 스케줄러 시스템</p>
-      <p>본 사이트는 12명의 정해진 대상자를 위해 제작된 예약 페이지입니다. 실시간 이메일 전송 내역은 알림 로그 창을 통해 가상으로 시뮬레이션할 수 있습니다.</p>
-      <p class="pt-2 text-slate-600">© 2026. All rights reserved. Powered by Professional Consulting Group.</p>
-    </div>
-  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-  <!-- App logic with raw ES6 JavaScript -->
-  <script>
-    // [MODIFIED] TARGET_USERS is now dynamically managed in-memory
-    let targetUsers = [
-      "강민준", "김서연", "박우진", "이도현", "정지우", "최하은",
-      "한재희", "윤성민", "송지아", "임태양", "오지민", "황선우"
-    ];
-
-    // Authentication State for Consultant Panel
-    let isAdminLoggedIn = false;
-    let adminPassword = '1234'; // Dynamic password state variable
-
-    // Active Auth Target Reservation State
-    let activeAuthBookingId = null;
-
-    // Track Blocked/Holiday Dates in memory
-    let blockedDates = [
-      getOffsetDateString(4),  // 4 days from now blocked
-      getOffsetDateString(10)  // 10 days from now blocked
-    ];
-
-    // Simulated initial data (Existing bookings to show layout immediately)
-    // [MODIFIED] Added 'password' field to initial data
-    let bookings = [
-      { id: "b1", user: "강민준", date: getOffsetDateString(1), time: "14:00", email: "mj.kang@example.com", phone: "010-1111-2222", password: "1234" },
-      { id: "b2", user: "김서연", date: getOffsetDateString(1), time: "14:30", email: "sy.kim@example.com", phone: "010-3333-4444", password: "1234" },
-      { id: "b3", user: "박우진", date: getOffsetDateString(2), time: "15:00", email: "wj.park@example.com", phone: "010-5555-6666", password: "1234" },
-      { id: "b4", user: "이도현", date: getOffsetDateString(2), time: "16:00", email: "dh.lee@example.com", phone: "010-7777-8888", password: "1234" },
-      { id: "b5", user: "정지우", date: getOffsetDateString(3), time: "14:00", email: "jw.jung@example.com", phone: "010-9999-0000", password: "1234" },
-      { id: "b6", user: "강민준", date: getOffsetDateString(5), time: "15:30", email: "mj.kang@example.com", phone: "010-1111-2222", password: "1234" }
-    ];
-
-    // Preset Consulting Time Slots (14:00 to 16:30, 30 min per session, start times)
-    const TIME_SLOTS = ["14:00", "14:30", "15:00", "15:30", "16:00"];
-
-    // Notification Log Store
-    let notificationLogs = [
-      { timestamp: getFormattedNow(), type: "SYSTEM", message: "알림 게이트웨이가 작동을 시작했습니다." },
-      { timestamp: getFormattedNow(), type: "SYSTEM", message: "코칭 예약 및 명단 관리 시스템 가동 완료" },
-      { timestamp: getFormattedNow(), type: "EMAIL", target: "mj.kang@example.com", subject: "[코칭 알림] 1회차 예약 확정", text: "강민준 님, 1회차 코칭 세션이 정상 예약되었습니다." }
-    ];
-
-    // Gallery Store with beautiful SVG Preset generators
-    const PRESET_SVGS = {
-      meeting1: `<svg class="w-full h-48 bg-indigo-50 text-indigo-600 rounded-t-xl" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="200" fill="#E0E7FF"/>
-        <circle cx="200" cy="100" r="45" fill="#6366F1" fill-opacity="0.2"/>
-        <path d="M120 140 H280 V160 H120 Z" fill="#4F46E5"/>
-        <circle cx="160" cy="90" r="12" fill="#4F46E5"/>
-        <circle cx="200" cy="80" r="14" fill="#312E81"/>
-        <circle cx="240" cy="90" r="12" fill="#4F46E5"/>
-        <text x="200" y="185" font-family="Noto Sans KR" font-size="12" font-weight="bold" fill="#312E81" text-anchor="middle">1대1 비즈니스 전략 설계 미팅 룸</text>
-      </svg>`,
-      meeting2: `<svg class="w-full h-48 bg-teal-50 text-teal-600 rounded-t-xl" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="200" fill="#F0FDF4"/>
-        <rect x="130" y="50" width="140" height="90" rx="6" fill="#15803D" fill-opacity="0.1" stroke="#166534" stroke-width="3"/>
-        <rect x="180" y="140" width="40" height="20" fill="#166534"/>
-        <path d="M150 160 H250 V165 H150 Z" fill="#14532D"/>
-        <circle cx="200" cy="85" r="15" fill="#166534"/>
-        <text x="200" y="185" font-family="Noto Sans KR" font-size="12" font-weight="bold" fill="#14532D" text-anchor="middle">비대면 원격 코칭 및 멘토링 현장</text>
-      </svg>`,
-      meeting3: `<svg class="w-full h-48 bg-amber-50 text-amber-600 rounded-t-xl" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="200" fill="#FEF3C7"/>
-        <circle cx="150" cy="100" r="30" fill="#D97706" fill-opacity="0.3"/>
-        <circle cx="250" cy="100" r="30" fill="#D97706" fill-opacity="0.3"/>
-        <path d="M130 110 Q200 60 270 110" stroke="#B45309" stroke-width="3" stroke-linecap="round"/>
-        <text x="200" y="185" font-family="Noto Sans KR" font-size="12" font-weight="bold" fill="#78350F" text-anchor="middle">성장 멘토링 및 핵심 아이디어 워크숍</text>
-      </svg>`
-    };
-
-    let galleryList = [
-      { id: "g1", author: "이혜진 수석컨설턴트", date: getOffsetDateString(-3), presetKey: "meeting1", desc: "첫 번째 코칭 핵심은 마케팅 분석이었습니다. 멘티분께서 매우 적극적이셔서 유의미한 분석 지표를 수립하였습니다." },
-      { id: "g2", author: "강민준 대상자", date: getOffsetDateString(-1), presetKey: "meeting2", desc: "이른 오후에 원격으로 진행된 코칭 세션이었습니다! 궁금했던 재무 흐름에 대해 확실히 해결할 수 있는 최고의 시간이었습니다." }
-    ];
-
-    // Custom confirm callback state
-    let onConfirmSuccess = null;
-
-    // Interactive State Variables
-    let currentYear, currentMonth;
-
-    // Helper functions
+    // 1. 유틸리티 함수 정의 (에러 원인 해결!)
     function getOffsetDateString(daysOffset) {
       const d = new Date();
       d.setDate(d.getDate() + daysOffset);
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${yyyy}-${mm}-${dd}`;
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const date = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${date}`;
     }
 
-    // Helper formatting function for notifications
-    function getFormattedNow() {
-      const now = new Date();
-      return `[${now.toLocaleDateString()} ${now.toTimeString().split(' ')[0]}]`;
+    function addMinutes(timeStr, mins) {
+      const [h, m] = timeStr.split(':').map(Number);
+      const d = new Date();
+      d.setHours(h, m + mins);
+      return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     }
 
-    // Custom confirm replacement dialog triggering
-    function openConfirm(title, msg, callback) {
-      document.getElementById('confirm-title').innerText = title;
-      document.getElementById('confirm-msg').innerText = msg;
-      onConfirmSuccess = callback;
-      document.getElementById('confirm-modal').classList.remove('hidden');
+    const appId = 'coaching-schedule-app';
+    let db, auth;
+    let isFirebaseReady = false;
+
+    try {
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        isFirebaseReady = true;
+      }
+    } catch (e) {
+      console.error("Firebase 인메모리 대체 모드 작동", e);
     }
 
-    function closeConfirm() {
-      document.getElementById('confirm-modal').classList.add('hidden');
-      onConfirmSuccess = null;
-    }
+    // 전역 상태 변수
+    let targetUsers = ["강민준", "김서연", "박우진", "이도현", "정지우", "최하은", "한재희", "윤성민", "송지아", "임태양", "오지민", "황선우"];
+    let isAdminLoggedIn = false;
+    let adminPassword = '1234'; 
+    let activeAuthBookingId = null;
+    let blockedDates = [getOffsetDateString(4), getOffsetDateString(10)];
+    let bookings = [];
+    const TIME_SLOTS = ["14:00", "14:30", "15:00", "15:30", "16:00"];
 
-    // Initialize Page Controls
-    window.addEventListener('DOMContentLoaded', () => {
+    let galleryList = [
+      { id: "g1", author: "이혜진 컨설턴트", date: getOffsetDateString(-3), presetKey: "meeting1", desc: "첫 번째 코칭 핵심은 AI 디지털 교과서 활용 분석이었습니다." },
+      { id: "g2", author: "강민준 연구원", date: getOffsetDateString(-1), presetKey: "meeting2", desc: "원격으로 진행된 코칭 세션이었습니다! 개념기반 탐구 교육 방향을 잡았습니다." }
+    ];
+
+    const PRESET_SVGS = {
+      meeting1: `<svg class="w-full h-48 bg-indigo-50 text-indigo-600 rounded-t-xl" viewBox="0 0 400 200"><rect width="400" height="200" fill="#E0E7FF"/><text x="200" y="100" font-size="14" fill="#312E81" text-anchor="middle">1대1 전략 미팅 룸</text></svg>`,
+      meeting2: `<svg class="w-full h-48 bg-teal-50 text-teal-600 rounded-t-xl" viewBox="0 0 400 200"><rect width="400" height="200" fill="#F0FDF4"/><text x="200" y="100" font-size="14" fill="#14532D" text-anchor="middle">비대면 원격 코칭 현장</text></svg>`,
+      meeting3: `<svg class="w-full h-48 bg-amber-50 text-amber-600 rounded-t-xl" viewBox="0 0 400 200"><rect width="400" height="200" fill="#FEF3C7"/><text x="200" y="100" font-size="14" fill="#78350F" text-anchor="middle">멘토링 및 워크숍</text></svg>`
+    };
+
+    let onConfirmSuccess = null;
+    let currentYear, currentMonth;
+
+    const initAuthAndSync = async () => {
+      if (!isFirebaseReady) {
+        initAppUI();
+        return;
+      }
+      try {
+        await signInAnonymously(auth);
+      } catch (e) {
+        initAppUI();
+        return;
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        if (!user) return;
+
+        const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'settings');
+        onSnapshot(configDocRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.blockedDates) blockedDates = data.blockedDates;
+            if (data.targetUsers) targetUsers = data.targetUsers;
+            if (data.adminPassword) adminPassword = data.adminPassword;
+          } else {
+            setDoc(configDocRef, { blockedDates, targetUsers, adminPassword });
+          }
+          initDropdowns();
+          renderStats();
+          renderCalendar();
+          renderAdminUsersList();
+          updateAdminView();
+        });
+
+        const bookingsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'bookings');
+        onSnapshot(bookingsColRef, (querySnap) => {
+          const tempBookings = [];
+          querySnap.forEach((doc) => { tempBookings.push({ id: doc.id, ...doc.data() }); });
+          bookings = tempBookings;
+          renderStats();
+          renderCalendar();
+          renderScheduleTable();
+        });
+
+        const galleryColRef = collection(db, 'artifacts', appId, 'public', 'data', 'gallery');
+        onSnapshot(galleryColRef, (querySnap) => {
+          const tempGallery = [];
+          querySnap.forEach((doc) => { tempGallery.push({ id: doc.id, ...doc.data() }); });
+          if (tempGallery.length > 0) galleryList = tempGallery;
+          renderGallery();
+        });
+      });
+      initAppUI();
+    };
+
+    function initAppUI() {
       const today = new Date();
       currentYear = today.getFullYear();
-      currentMonth = today.getMonth(); // 0-based
+      currentMonth = today.getMonth();
 
-      // Set input limit for Date Range: Min is today, Max is 1 Month from today
-      const dateInput = document.getElementById('booking-date');
-      dateInput.min = getOffsetDateString(0);
-      dateInput.max = getOffsetDateString(30);
+      document.getElementById('booking-date').min = getOffsetDateString(0);
+      document.getElementById('booking-date').max = getOffsetDateString(30);
 
-      const adminDateInput = document.getElementById('admin-block-date');
-      adminDateInput.min = getOffsetDateString(0);
-      adminDateInput.max = getOffsetDateString(30);
-
-      const editDateInput = document.getElementById('edit-booking-date');
-      editDateInput.min = getOffsetDateString(0);
-      editDateInput.max = getOffsetDateString(30);
-
-      // Initialize UI Renders
       initDropdowns();
       renderStats();
       renderCalendar();
       renderScheduleTable();
-      renderLogs();
       renderGallery();
       renderBlockedDatesList();
-      renderAdminUsersList(); // New dynamic user list
-      updateAdminView(); // Load initial Auth View state
-
-      // Setup Lucide Icons
-      lucide.createIcons();
-
-      // Attach Event Listeners
+      renderAdminUsersList();
+      updateAdminView();
       setupEventListeners();
-    });
+    }
 
-    // Populate dropdown elements dynamically
-    function initDropdowns() {
-      const userSelect = document.getElementById('user-select');
-      const filterUser = document.getElementById('filter-user');
-
-      // Preserve currently selected index if valid
-      const currentSelectedVal = userSelect.value;
-      const currentFilterVal = filterUser.value;
-
-      userSelect.innerHTML = `<option value="" disabled selected>본인의 이름을 선택해주세요</option>`;
-      filterUser.innerHTML = `<option value="">모든 대상자</option>`;
-
-      // Sort names
-      const sortedUsers = [...targetUsers].sort();
-
-      sortedUsers.forEach(name => {
-        // Form Select Option
-        const optForm = document.createElement('option');
-        optForm.value = name;
-        optForm.textContent = name;
-        userSelect.appendChild(optForm);
-
-        // Filter Option
-        const optFilter = document.createElement('option');
-        optFilter.value = name;
-        optFilter.textContent = name;
-        filterUser.appendChild(optFilter);
-      });
-
-      // Restore selections
-      if (targetUsers.includes(currentSelectedVal)) {
-        userSelect.value = currentSelectedVal;
-      }
-      if (targetUsers.includes(currentFilterVal)) {
-        filterUser.value = currentFilterVal;
+    async function saveConfig() {
+      if (isFirebaseReady && auth.currentUser) {
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'settings'), { blockedDates, targetUsers, adminPassword }, { merge: true });
       }
     }
 
-    // Render Progress and Stats Widgets
+    async function addBookingDoc(booking) {
+      if (isFirebaseReady && auth.currentUser) {
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', booking.id), booking);
+      } else {
+        bookings.push(booking); renderCalendar(); renderScheduleTable();
+      }
+    }
+
+    async function deleteBookingDoc(id) {
+      if (isFirebaseReady && auth.currentUser) {
+        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', id));
+      } else {
+        bookings = bookings.filter(b => b.id !== id); renderCalendar(); renderScheduleTable();
+      }
+    }
+
+    function initDropdowns() {
+      const userSelect = document.getElementById('user-select');
+      const filterUser = document.getElementById('filter-user');
+      userSelect.innerHTML = `<option value="" disabled selected>본인의 이름을 선택해주세요</option>`;
+      filterUser.innerHTML = `<option value="">모든 대상자</option>`;
+      [...targetUsers].sort().forEach(name => {
+        userSelect.innerHTML += `<option value="${name}">${name}</option>`;
+        filterUser.innerHTML += `<option value="${name}">${name}</option>`;
+      });
+    }
+
     function renderStats() {
       const totalBookings = bookings.length;
       document.getElementById('stat-total-bookings').textContent = `${totalBookings}건`;
-
-      // Unique users who booked at least once
       const activeUsers = new Set(bookings.map(b => b.user));
-      const pendingUsers = targetUsers.filter(u => !activeUsers.has(u)).length;
-      document.getElementById('stat-pending-users').textContent = `${pendingUsers}명`;
-
-      // Target Completion: (targetUsers * 2.5) as target
-      const targetCount = Math.max(10, targetUsers.length * 2.5);
-      const percent = Math.min(100, Math.round((totalBookings / targetCount) * 100));
+      document.getElementById('stat-pending-users').textContent = `${targetUsers.filter(u => !activeUsers.has(u)).length}명`;
+      const percent = Math.min(100, Math.round((totalBookings / 30) * 100));
       document.getElementById('progress-percent').textContent = `${percent}%`;
       document.getElementById('progress-bar').style.width = `${percent}%`;
     }
 
-    // Toggle Admin Panel View states (Login Screen vs Control Dashboard)
     function updateAdminView() {
-      const loginView = document.getElementById('admin-login-view');
-      const toolsView = document.getElementById('admin-tools-view');
-      const logoutBtn = document.getElementById('btn-admin-logout');
-
+      const uploadBtn = document.getElementById('btn-open-upload');
       if (isAdminLoggedIn) {
-        loginView.classList.add('hidden');
-        toolsView.classList.remove('hidden');
-        logoutBtn.classList.remove('hidden');
-        document.getElementById('admin-password').value = '';
+        document.getElementById('admin-login-view').classList.add('hidden');
+        document.getElementById('admin-tools-view').classList.remove('hidden');
+        document.getElementById('btn-admin-logout').classList.remove('hidden');
+        uploadBtn.classList.remove('hidden');
       } else {
-        loginView.classList.remove('hidden');
-        toolsView.classList.add('hidden');
-        logoutBtn.classList.add('hidden');
+        document.getElementById('admin-login-view').classList.remove('hidden');
+        document.getElementById('admin-tools-view').classList.add('hidden');
+        document.getElementById('btn-admin-logout').classList.add('hidden');
+        uploadBtn.classList.add('hidden');
       }
-
-      // Update current password indicators on the screen
-      const hints = document.querySelectorAll('.admin-password-hint');
-      hints.forEach(hint => {
-        hint.innerHTML = `※ 시스템 안내 : 현재 비밀번호는 <b class="text-slate-600 font-bold">${adminPassword}</b> 입니다.`;
-      });
     }
 
-    // [NEW] Render administrative user names list
-    function renderAdminUsersList() {
-      const container = document.getElementById('admin-users-list');
-      const counter = document.getElementById('registered-user-count');
-      container.innerHTML = '';
-
-      counter.textContent = `${targetUsers.length}명`;
-
-      const sortedUsers = [...targetUsers].sort();
-
-      sortedUsers.forEach(name => {
-        const item = document.createElement('div');
-        item.className = "group inline-flex items-center gap-1 bg-indigo-50 hover:bg-rose-50 text-indigo-700 hover:text-rose-800 border border-indigo-100 hover:border-rose-200 px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer transition-colors";
-        item.onclick = () => {
-          openConfirm("연구원 삭제 확인", `"${name}" 연구원을 코칭 대상자 명단에서 완전히 삭제하시겠습니까? 관련 예약 내역이 보존되지 않을 수 있습니다.`, () => {
-            targetUsers = targetUsers.filter(u => u !== name);
-            // Optionally clean up bookings of deleted user? Let's keep them but alert.
-            initDropdowns();
-            renderStats();
-            renderAdminUsersList();
-            showToast(`"${name}" 연구원이 명단에서 삭제되었습니다.`, "success");
-            closeConfirm();
-          });
-        };
-        item.innerHTML = `
-          <span>${name}</span>
-          <i data-lucide="x" class="w-3 h-3 text-indigo-400 group-hover:text-rose-500"></i>
-        `;
-        container.appendChild(item);
-      });
-
-      lucide.createIcons();
-    }
-
-    // Render Calendar representation
     function renderCalendar() {
       const grid = document.getElementById('calendar-grid');
-      const title = document.getElementById('calendar-month-title');
       grid.innerHTML = '';
-
-      // Month Title setting
-      title.textContent = `${currentYear}년 ${currentMonth + 1}월`;
-
-      // Calculate days in month
-      const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0(Sun) - 6(Sat)
+      document.getElementById('calendar-month-title').textContent = `${currentYear}년 ${currentMonth + 1}월`;
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
       const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-      // Dummy filler cells before day 1
       for (let i = 0; i < firstDay; i++) {
-        const d = document.createElement('div');
-        d.className = "bg-slate-100/50 rounded-lg min-h-[50px]";
-        grid.appendChild(d);
+        grid.innerHTML += `<div class="bg-slate-100/50 rounded-lg min-h-[50px]"></div>`;
       }
-
-      // Generate actual days
-      const todayStr = getOffsetDateString(0);
 
       for (let day = 1; day <= totalDays; day++) {
-        const dayDiv = document.createElement('div');
         const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        
-        // Check if date is blocked by Admin
         const isBlocked = blockedDates.includes(formattedDate);
+        const count = bookings.filter(b => b.date === formattedDate).length;
 
-        // Count bookings for this specific date
-        const dayBookings = bookings.filter(b => b.date === formattedDate);
-        const bookingCount = dayBookings.length;
+        let style = "bg-slate-50 border-slate-100";
+        if (isBlocked) style = "bg-rose-50 border-rose-200 text-slate-400";
+        else if (count > 0) style = "bg-indigo-50 border-indigo-100 text-indigo-900";
 
-        // Visual design logic based on booking load & block status
-        let bgStyle = "bg-slate-50 text-slate-800 border border-slate-100 hover:border-indigo-200";
-        let countBadge = "";
-
-        if (isBlocked) {
-          bgStyle = "bg-rose-50 text-slate-400 border border-rose-200 cursor-not-allowed";
-          countBadge = `<span class="block text-[9px] font-bold text-rose-500 mt-1 flex items-center gap-0.5"><i data-lucide="lock" class="w-2.5 h-2.5"></i> 예약불가</span>`;
-        } else if (bookingCount > 0 && bookingCount < 3) {
-          bgStyle = "bg-indigo-50 text-indigo-900 border border-indigo-100 hover:bg-indigo-100";
-          countBadge = `<span class="block text-[9px] font-bold text-indigo-600 mt-1">${bookingCount}건 예약</span>`;
-        } else if (bookingCount >= 3) {
-          bgStyle = "bg-indigo-600 text-white border border-indigo-700 hover:bg-indigo-700";
-          countBadge = `<span class="block text-[9px] font-bold text-amber-300 mt-1">${bookingCount}건 마감임박</span>`;
-        }
-
-        // Distinct styling if the cell represents TODAY
-        const isToday = formattedDate === todayStr;
-        const todayBorder = isToday ? "ring-2 ring-indigo-500 ring-offset-1" : "";
-
-        dayDiv.className = `p-1.5 rounded-lg min-h-[60px] flex flex-col justify-between text-left cursor-pointer transition-all ${bgStyle} ${todayBorder}`;
-        dayDiv.onclick = () => {
-          if (isBlocked) {
-            showToast("🔒 이 날짜는 코칭 일정(휴무/출장 등)으로 인해 예약이 차단되었습니다.", "error");
-            return;
-          }
-
-          // Pre-populate Form with selected date
-          const dateInput = document.getElementById('booking-date');
-          dateInput.value = formattedDate;
+        const cell = document.createElement('div');
+        cell.className = `p-1.5 rounded-lg min-h-[60px] border flex flex-col justify-between cursor-pointer text-xs ${style}`;
+        cell.innerHTML = `<span>${day}</span><span>${isBlocked ? '🔒 차단' : count > 0 ? count + '건' : ''}</span>`;
+        cell.onclick = () => {
+          if (isBlocked) return showToast("🔒 예약 불가 차단일입니다.", "error");
+          document.getElementById('booking-date').value = formattedDate;
           triggerDateChange(formattedDate);
-          
-          // Scroll smoothly to reservation panel
-          document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
-          showToast(`🗓️ ${currentMonth + 1}월 ${day}일이 선택되었습니다.`, "info");
         };
-
-        dayDiv.innerHTML = `
-          <div class="flex justify-between items-center">
-            <span class="font-semibold text-xs">${day}</span>
-            ${isToday ? '<span class="text-[9px] px-1 bg-rose-500 text-white rounded font-bold">오늘</span>' : ''}
-          </div>
-          ${countBadge}
-        `;
-
-        grid.appendChild(dayDiv);
+        grid.appendChild(cell);
       }
-      lucide.createIcons();
     }
 
-    // Triggered whenever user changes date to calculate available slots
-    function triggerDateChange(dateStr, isEditForm = false) {
-      const container = isEditForm ? document.getElementById('edit-time-slot-container') : document.getElementById('time-slot-container');
+    function triggerDateChange(dateStr, isEdit = false) {
+      const container = isEdit ? document.getElementById('edit-time-slot-container') : document.getElementById('time-slot-container');
       container.innerHTML = '';
-
-      if (!dateStr) return;
-
-      // 1. Strict Rule Check: Consultant's own Blocked Days
       if (blockedDates.includes(dateStr)) {
-        container.innerHTML = `
-          <div class="col-span-full py-4 text-center text-xs text-rose-500 font-semibold bg-rose-50 border border-dashed border-rose-200 rounded-lg flex flex-col items-center gap-1">
-            <i data-lucide="lock" class="w-5 h-5 text-rose-500"></i>
-            <span>해당 일자는 코칭 휴무 지정일입니다. 다른 날짜를 선택해주세요.</span>
-          </div>
-        `;
-        lucide.createIcons();
+        container.innerHTML = `<div class="col-span-full py-2 text-center text-xs text-rose-500 font-bold">차단된 날짜입니다.</div>`;
         return;
       }
-
-      const dateObj = new Date(dateStr);
-      const dayOfWeek = dateObj.getDay(); // 0(Sun) - 6(Sat)
-
-      // 2. Strict Rule Check: No weekends (Saturday, Sunday) allowed
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
-        container.innerHTML = `
-          <div class="col-span-full py-4 text-center text-xs text-rose-500 font-semibold bg-rose-50 border border-dashed border-rose-200 rounded-lg">
-            주말은 운영되지 않습니다. 평일 일정을 선택해주세요!
-          </div>
-        `;
-        return;
-      }
-
-      // Check reservation capacity for selected date
-      // Exclude current reservation when calculating conflicts in EDIT mode
-      const editingId = isEditForm ? document.getElementById('edit-booking-id').value : null;
-      const activeBookingsForDate = bookings.filter(b => b.date === dateStr && b.id !== editingId);
-
       TIME_SLOTS.forEach(time => {
-        const isBooked = activeBookingsForDate.some(b => b.time === time);
-        const slotBtn = document.createElement('div');
-        
-        if (isBooked) {
-          slotBtn.className = "p-2.5 bg-slate-100 border border-slate-200 text-slate-400 text-xs rounded-lg text-center cursor-not-allowed select-none line-through";
-          slotBtn.textContent = `${time} (예약 완료)`;
-        } else {
-          slotBtn.className = `${isEditForm ? 'edit-time-pill' : 'time-pill'} p-2.5 bg-white border border-slate-300 text-slate-800 text-xs rounded-lg text-center cursor-pointer hover:bg-indigo-50 hover:border-indigo-500 transition-all font-semibold`;
-          slotBtn.textContent = time;
-          slotBtn.dataset.time = time;
-          slotBtn.onclick = () => selectTimeSlot(slotBtn, isEditForm);
+        const isBooked = bookings.some(b => b.date === dateStr && b.time === time);
+        const slot = document.createElement('div');
+        slot.className = `p-2 text-center rounded-lg text-xs border cursor-pointer ${isBooked ? 'bg-slate-100 text-slate-400 line-through' : 'bg-white text-slate-800'}`;
+        slot.textContent = time;
+        if (!isBooked) {
+          slot.onclick = () => {
+            container.querySelectorAll('.time-pill, .edit-time-pill').forEach(p => p.classList.remove('bg-indigo-600', 'text-white'));
+            slot.classList.add('bg-indigo-600', 'text-white');
+            slot.className += isEdit ? ' edit-time-pill' : ' time-pill';
+            slot.dataset.selected = "true";
+            slot.dataset.time = time;
+          };
         }
-        container.appendChild(slotBtn);
+        container.appendChild(slot);
       });
     }
 
-    // Handles active selection styling of time pills
-    function selectTimeSlot(selectedElement, isEditForm = false) {
-      const pills = document.querySelectorAll(isEditForm ? '.edit-time-pill' : '.time-pill');
-      pills.forEach(p => {
-        p.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
-        p.classList.add('bg-white', 'text-slate-800', 'border-slate-300');
-        p.removeAttribute('data-selected');
-      });
-
-      // Highlight selected
-      selectedElement.classList.remove('bg-white', 'text-slate-800', 'border-slate-300');
-      selectedElement.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
-      selectedElement.dataset.selected = "true";
-    }
-
-    // Dynamic Filtered Rendering of Booking Table
     function renderScheduleTable() {
       const tbody = document.getElementById('schedule-tbody');
-      const filterUserVal = document.getElementById('filter-user').value;
-      const filterDateVal = document.getElementById('filter-date').value;
-
       tbody.innerHTML = '';
-
-      // Apply in-memory filters
-      let filtered = [...bookings];
-
-      if (filterUserVal) {
-        filtered = filtered.filter(b => b.user === filterUserVal);
-      }
-      if (filterDateVal) {
-        filtered = filtered.filter(b => b.date === filterDateVal);
-      }
-
-      // Sort by Date, then Time chronologically
-      filtered.sort((a, b) => {
-        if (a.date !== b.date) return a.date.localeCompare(b.date);
-        return a.time.localeCompare(b.time);
-      });
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400 italic">
-              해당 검색 조건과 부합하는 코칭 일정이 존재하지 않습니다.
+      bookings.forEach((b, i) => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50">
+            <td class="px-6 py-4 text-xs font-mono">#${i+1}</td>
+            <td class="px-6 py-4 font-bold">${b.user}</td>
+            <td class="px-6 py-4">${b.date}</td>
+            <td class="px-6 py-4">${b.time}</td>
+            <td class="px-6 py-4 text-xs">${b.email}</td>
+            <td class="px-6 py-4 text-center">
+              <button onclick="authenticateAction('${b.id}')" class="text-xs bg-slate-900 text-white px-3 py-1.5 rounded-lg">수정/삭제</button>
             </td>
-          </tr>
-        `;
-        return;
-      }
-
-      // Render Rows
-      filtered.forEach((b, index) => {
-        const row = document.createElement('tr');
-        row.className = "hover:bg-slate-50/50 transition-colors";
-
-        row.innerHTML = `
-          <td class="px-6 py-4 text-xs text-slate-400 font-bold font-mono">#${index + 1}</td>
-          <td class="px-6 py-4 font-bold text-slate-900 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-indigo-500"></span> ${b.user}
-          </td>
-          <td class="px-6 py-4 font-semibold text-slate-800">${b.date}</td>
-          <td class="px-6 py-4">
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-indigo-100 text-indigo-800">
-              ${b.time} ~ ${addMinutes(b.time, 30)}
-            </span>
-          </td>
-          <td class="px-6 py-4">
-            <div class="flex flex-col gap-0.5 text-xs text-slate-500">
-              <span class="flex items-center gap-1"><i data-lucide="mail" class="w-3 h-3 text-slate-400"></i> ${b.email}</span>
-              <span class="flex items-center gap-1"><i data-lucide="smartphone" class="w-3 h-3 text-slate-400"></i> ${b.phone}</span>
-            </div>
-          </td>
-          <td class="px-6 py-4 text-center">
-            <button onclick="authenticateAction('${b.id}')" class="text-xs bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1 mx-auto shadow-sm">
-              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> 수정 / 삭제
-            </button>
-          </td>
-        `;
-
-        tbody.appendChild(row);
-      });
-
-      lucide.createIcons();
-      updateSimulatorTriggerOptions();
-    }
-
-    // Helper to calculate end time string
-    function addMinutes(timeStr, minutes) {
-      const [h, m] = timeStr.split(':').map(Number);
-      const totalMin = h * 60 + m + minutes;
-      const finalH = Math.floor(totalMin / 60);
-      const finalM = totalMin % 60;
-      return `${String(finalH).padStart(2, '0')}:${String(finalM).padStart(2, '0 flights')}`;
-    }
-
-    // [NEW] Entry point for edit/delete authorization. Opens password prompt
-    function authenticateAction(bookingId) {
-      activeAuthBookingId = bookingId;
-      document.getElementById('auth-input-pwd').value = '';
-
-      // Bypass password if Admin is logged in
-      if (isAdminLoggedIn) {
-        showToast("👑 관리자 권한으로 본인 인증 모달이 자동 건너뛰기 되었습니다.", "success");
-        openEditOrDeleteChoice();
-        return;
-      }
-
-      // Show password auth modal
-      document.getElementById('auth-modal').classList.remove('hidden');
-    }
-
-    // [NEW] Open choices inside auth modal if validated
-    function openEditOrDeleteChoice() {
-      // We will instantly execute based on what user wants.
-      // To keep it simple, the modal provides [수정 진행] [즉시 삭제] buttons.
-      // Let's hook them directly.
-    }
-
-    // [NEW] Close authentication modal
-    function closeAuthModal() {
-      document.getElementById('auth-modal').classList.add('hidden');
-      activeAuthBookingId = null;
-    }
-
-    // [NEW] Execute reservation deletion after auth pass
-    function proceedDeletion(id) {
-      const bObj = bookings.find(b => b.id === id);
-      if (!bObj) return;
-
-      openConfirm("예약 변경 취소 확정", `"${bObj.user}"님의 ${bObj.date} [${bObj.time}] 코칭 예약을 취소하시겠습니까?`, () => {
-        bookings = bookings.filter(b => b.id !== id);
-
-        // Log the cancel event
-        pushLog("EMAIL", bObj.email, `[코칭 취소] ${bObj.date} 일정 취소 완료`, `${bObj.user}님, 예정되어 있던 코칭 취소 처리가 안전하게 완료되었습니다.`);
-
-        // Update UI
-        renderStats();
-        renderCalendar();
-        renderScheduleTable();
-        closeConfirm();
-        showToast(`${bObj.user}님의 코칭 일정이 취소되었습니다.`, "success");
+          </tr>`;
       });
     }
 
-    // [NEW] Open edit form and pre-populate
-    function proceedEdit(id) {
-      const bObj = bookings.find(b => b.id === id);
-      if (!bObj) return;
-
-      document.getElementById('edit-booking-id').value = bObj.id;
-      document.getElementById('edit-user-display').value = bObj.user;
-      document.getElementById('edit-booking-date').value = bObj.date;
-      document.getElementById('edit-user-email').value = bObj.email;
-      document.getElementById('edit-user-phone').value = bObj.phone;
-
-      // Calculate time slot rendering for edit
-      triggerDateChange(bObj.date, true);
-
-      // Select existing time slot pill
-      setTimeout(() => {
-        const pills = document.querySelectorAll('.edit-time-pill');
-        pills.forEach(p => {
-          if (p.dataset.time === bObj.time) {
-            selectTimeSlot(p, true);
-          }
-        });
-      }, 50);
-
-      document.getElementById('edit-modal').classList.remove('hidden');
-    }
-
-    // Render Blocked Dates Tags in Admin Panel
-    function renderBlockedDatesList() {
-      const container = document.getElementById('blocked-dates-list');
-      const counter = document.getElementById('blocked-count');
-      container.innerHTML = '';
-
-      counter.textContent = `${blockedDates.length}개 지정됨`;
-
-      if (blockedDates.length === 0) {
-        container.innerHTML = `
-          <p class="text-xs text-slate-400 italic py-2">현재 차단된 날짜가 존재하지 않습니다.</p>
-        `;
-        return;
-      }
-
-      const sortedBlocked = [...blockedDates].sort();
-
-      sortedBlocked.forEach(date => {
-        const tag = document.createElement('div');
-        tag.className = "inline-flex items-center gap-1.5 bg-rose-50 text-rose-800 border border-rose-200 px-3 py-1 rounded-full text-xs font-semibold";
-        tag.innerHTML = `
-          <span>${date}</span>
-          <button onclick="unblockDate('${date}')" class="text-rose-500 hover:text-rose-800 transition-colors focus:outline-none">
-            <i data-lucide="x-circle" class="w-4 h-4"></i>
-          </button>
-        `;
-        container.appendChild(tag);
-      });
-
-      lucide.createIcons();
-    }
-
-    // Unblock specific date
-    function unblockDate(dateStr) {
-      blockedDates = blockedDates.filter(d => d !== dateStr);
-      renderBlockedDatesList();
-      renderCalendar();
-      
-      const currentFormDate = document.getElementById('booking-date').value;
-      if (currentFormDate === dateStr) {
-        triggerDateChange(dateStr);
-      }
-
-      showToast(`🔓 ${dateStr} 차단이 해제되어 정상 예약이 가능합니다.`, "success");
-    }
-
-    // Render Simulated Email Logs
-    function renderLogs() {
-      const container = document.getElementById('log-console-content');
-      container.innerHTML = '';
-
-      if (notificationLogs.length === 0) {
-        container.innerHTML = `<p class="text-slate-500 italic">[시스템 알림] 현재 수집된 알림 내역이 비어 있습니다.</p>`;
-        return;
-      }
-
-      const reversedLogs = [...notificationLogs].reverse();
-
-      reversedLogs.forEach(l => {
-        const p = document.createElement('div');
-        p.className = "pb-2.5 border-b border-slate-900 last:border-0";
-        
-        if (l.type === "SYSTEM") {
-          p.innerHTML = `
-            <div class="flex items-center gap-2 text-emerald-400">
-              <span>${l.timestamp}</span>
-              <span class="bg-emerald-950 px-1.5 py-0.5 rounded text-[9px] font-bold">SYS</span>
-              <span>${l.message}</span>
-            </div>
-          `;
-        } else {
-          p.innerHTML = `
-            <div class="space-y-0.5">
-              <div class="flex items-center justify-between text-indigo-400">
-                <span class="flex items-center gap-1">
-                  <span>${l.timestamp}</span>
-                  <span class="bg-indigo-950 px-1.5 py-0.5 rounded text-[9px] font-bold text-indigo-300">MAIL/SMS</span>
-                  <span class="text-slate-300 font-semibold">&lt;${l.target}&gt;</span>
-                </span>
-                <span class="text-[10px] text-emerald-400 font-bold">● 발송완료 (SMTP 200 OK)</span>
-              </div>
-              <p class="text-amber-400 font-bold pl-4">제목: ${l.subject}</p>
-              <p class="text-slate-400 pl-4 text-[11px] leading-tight">${l.text}</p>
-            </div>
-          `;
-        }
-
-        container.appendChild(p);
-      });
-    }
-
-    // Add Simulated Log entry
-    function pushLog(type, target, subject, text, message = "") {
-      const logEntry = {
-        timestamp: getFormattedNow(),
-        type,
-        target,
-        subject,
-        text,
-        message
-      };
-      notificationLogs.push(logEntry);
-      renderLogs();
-    }
-
-    // Update Dropdown in simulator column
-    function updateSimulatorTriggerOptions() {
-      const select = document.getElementById('trigger-log-select');
-      select.innerHTML = `<option value="" disabled selected>테스트할 일정을 선택하세요</option>`;
-
-      bookings.forEach(b => {
-        const opt = document.createElement('option');
-        opt.value = b.id;
-        opt.textContent = `${b.user} - ${b.date} (${b.time})`;
-        select.appendChild(opt);
-      });
-    }
-
-    // Render Gallery Photos & Cards
     function renderGallery() {
       const grid = document.getElementById('gallery-grid');
       grid.innerHTML = '';
-
-      if (galleryList.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-12 text-center text-sm text-slate-400 italic border border-dashed border-slate-200 rounded-2xl">
-            등록된 활동 사진이 없습니다. 첫 번째 자취를 남겨보세요!
-          </div>
-        `;
-        return;
-      }
-
       galleryList.forEach(item => {
-        const card = document.createElement('article');
-        card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-shadow";
-
-        const svgHeader = PRESET_SVGS[item.presetKey] || PRESET_SVGS['meeting1'];
-
-        card.innerHTML = `
-          <div class="relative">
-            ${svgHeader}
-            <div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-              Verified Session
+        grid.innerHTML += `
+          <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            ${PRESET_SVGS[item.presetKey] || ''}
+            <div class="p-4 space-y-2">
+              <p class="text-xs text-slate-600">"${item.desc}"</p>
+              <div class="text-[11px] text-slate-400 flex justify-between font-bold"><span>${item.author}</span><span>${item.date}</span></div>
             </div>
-          </div>
-          <div class="p-5 flex-grow flex flex-col justify-between space-y-3">
-            <p class="text-xs text-slate-600 leading-relaxed font-medium">"${item.desc}"</p>
-            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-              <span class="flex items-center gap-1 font-bold text-slate-700"><i data-lucide="user" class="w-3.5 h-3.5 text-indigo-500"></i> ${item.author}</span>
-              <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${item.date}</span>
-            </div>
-          </div>
-        `;
-
-        grid.appendChild(card);
+          </div>`;
       });
-
-      lucide.createIcons();
     }
 
-    // Interactive Notification Toast helper
-    function showToast(message, type = "success") {
+    function renderAdminUsersList() {
+      const container = document.getElementById('admin-users-list');
+      container.innerHTML = '';
+      targetUsers.forEach(u => {
+        container.innerHTML += `<span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs">${u}</span>`;
+      });
+    }
+
+    function renderBlockedDatesList() {
+      const container = document.getElementById('blocked-dates-list');
+      container.innerHTML = '';
+      blockedDates.forEach(d => {
+        container.innerHTML += `<span class="bg-rose-50 text-rose-700 px-2 py-1 rounded text-xs">${d}</span>`;
+      });
+    }
+
+    function showToast(msg, type = "success") {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      
-      let bg = "bg-slate-900 text-white";
-      let icon = "info";
-
-      if (type === "success") {
-        bg = "bg-indigo-600 text-white";
-        icon = "check-circle-2";
-      } else if (type === "error") {
-        bg = "bg-rose-600 text-white";
-        icon = "alert-triangle";
-      }
-
-      toast.className = `p-4 rounded-xl shadow-lg flex items-center gap-3 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto max-w-sm ${bg}`;
-      toast.innerHTML = `
-        <i data-lucide="${icon}" class="w-5 h-5 flex-shrink-0"></i>
-        <p class="text-xs font-bold leading-tight">${message}</p>
-      `;
-
+      toast.className = `p-3 rounded-lg text-xs font-bold text-white shadow-md ${type === 'success' ? 'bg-green-600' : 'bg-rose-600'}`;
+      toast.textContent = msg;
       container.appendChild(toast);
-      lucide.createIcons();
-
-      setTimeout(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      }, 50);
-
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-[-10px]');
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
+      setTimeout(() => toast.remove(), 3000);
     }
 
-    // Attach Event Handlers
+    function authenticateAction(id) {
+      activeAuthBookingId = id;
+      if (isAdminLoggedIn) { proceedEdit(id); return; }
+      document.getElementById('auth-modal').classList.remove('hidden');
+    }
+
+    function proceedEdit(id) {
+      const b = bookings.find(x => x.id === id);
+      if (!b) return;
+      document.getElementById('edit-booking-id').value = b.id;
+      document.getElementById('edit-user-display').value = b.user;
+      document.getElementById('edit-booking-date').value = b.date;
+      document.getElementById('edit-user-email').value = b.email;
+      document.getElementById('edit-user-phone').value = b.phone;
+      triggerDateChange(b.date, true);
+      document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    function openConfirm(title, msg, onOk) {
+      document.getElementById('confirm-msg').textContent = msg;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+      onConfirmSuccess = onOk;
+    }
+    function closeConfirm() { document.getElementById('confirm-modal').classList.add('hidden'); }
+
     function setupEventListeners() {
-      // Navigation Admin button toggles the entire section
-      document.getElementById('btn-nav-admin').addEventListener('click', (e) => {
-        e.preventDefault();
-        const adminSection = document.getElementById('admin-panel-section');
-        adminSection.classList.remove('hidden');
-        adminSection.scrollIntoView({ behavior: 'smooth' });
-        showToast("🔑 관리자 보안 인증 패널을 활성화했습니다.", "info");
+      document.getElementById('btn-nav-admin').addEventListener('click', () => {
+        document.getElementById('admin-panel-section').classList.remove('hidden');
       });
 
-      // Admin Login
       document.getElementById('btn-admin-login').addEventListener('click', () => {
-        const passwordInput = document.getElementById('admin-password');
-        if (passwordInput.value === adminPassword) {
-          isAdminLoggedIn = true;
-          updateAdminView();
-          showToast("🔓 컨설턴트 로그인이 정상 처리되었습니다. 관리 도구가 해제되었습니다.", "success");
-        } else {
-          showToast("❌ 비밀번호가 다릅니다. 다시 시도해 주세요.", "error");
-        }
+        if (document.getElementById('admin-password').value === adminPassword) {
+          isAdminLoggedIn = true; updateAdminView(); showToast("관리자 로그인 성공");
+        } else showToast("비밀번호 불일치", "error");
       });
 
-      // Admin password Enter trigger
-      document.getElementById('admin-password').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          document.getElementById('btn-admin-login').click();
-        }
-      });
-
-      // Admin Logout
       document.getElementById('btn-admin-logout').addEventListener('click', () => {
-        isAdminLoggedIn = false;
-        updateAdminView();
-        document.getElementById('admin-panel-section').classList.add('hidden');
-        showToast("🔒 안전하게 로그아웃 되어 관리 도구가 잠겼습니다.", "info");
+        isAdminLoggedIn = false; updateAdminView();
       });
 
-      // [NEW] Admin: Add Coaching Target Name
-      document.getElementById('btn-add-user').addEventListener('click', () => {
-        const input = document.getElementById('admin-new-user-name');
-        const name = input.value.trim();
+      document.getElementById('booking-date').addEventListener('change', (e) => triggerDateChange(e.target.value));
 
-        if (!name) {
-          showToast("추가할 성명을 올바르게 입력해주세요.", "error");
-          return;
-        }
+      document.getElementById('booking-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pill = document.querySelector('.time-pill[data-selected="true"]');
+        if (!pill) return showToast("시간을 선택해주세요.", "error");
 
-        if (targetUsers.includes(name)) {
-          showToast("이미 목록에 등록되어 있는 대상 성명입니다.", "error");
-          return;
-        }
-
-        targetUsers.push(name);
-        input.value = '';
-        initDropdowns();
-        renderStats();
-        renderAdminUsersList();
-        showToast(`"${name}" 연구원이 코칭 명단에 신규 등록되었습니다.`, "success");
+        const newB = {
+          id: `b_${Date.now()}`,
+          user: document.getElementById('user-select').value,
+          date: document.getElementById('booking-date').value,
+          time: pill.dataset.time,
+          email: document.getElementById('user-email').value,
+          phone: document.getElementById('user-phone').value,
+          password: document.getElementById('user-booking-pwd').value
+        };
+        addBookingDoc(newB);
+        showToast("예약이 확정되었습니다.");
       });
 
-      // [NEW] Client Reservation Verification handlers (Authentication Modal)
       document.getElementById('btn-auth-confirm-edit').addEventListener('click', () => {
-        const b = bookings.find(item => item.id === activeAuthBookingId);
-        const enteredPwd = document.getElementById('auth-input-pwd').value;
-
-        if (isAdminLoggedIn || (b && enteredPwd === b.password)) {
-          showToast("🔓 본인 인증이 성공적으로 확인되었습니다. 코칭 예약을 편집합니다.", "success");
-          closeAuthModal();
+        const b = bookings.find(x => x.id === activeAuthBookingId);
+        if (b && document.getElementById('auth-input-pwd').value === b.password) {
+          document.getElementById('auth-modal').classList.add('hidden');
           proceedEdit(b.id);
-        } else {
-          showToast("❌ 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.", "error");
-        }
+        } else showToast("비밀번호 불일치", "error");
       });
 
       document.getElementById('btn-auth-confirm-delete').addEventListener('click', () => {
-        const b = bookings.find(item => item.id === activeAuthBookingId);
-        const enteredPwd = document.getElementById('auth-input-pwd').value;
-
-        if (isAdminLoggedIn || (b && enteredPwd === b.password)) {
-          closeAuthModal();
-          proceedDeletion(b.id);
-        } else {
-          showToast("❌ 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.", "error");
-        }
+        const b = bookings.find(x => x.id === activeAuthBookingId);
+        if (b && document.getElementById('auth-input-pwd').value === b.password) {
+          deleteBookingDoc(b.id);
+          document.getElementById('auth-modal').classList.add('hidden');
+          showToast("삭제되었습니다.");
+        } else showToast("비밀번호 불일치", "error");
       });
 
-      // Password input dismiss buttons
-      const closeAuthBtns = document.querySelectorAll('.btn-close-auth');
-      closeAuthBtns.forEach(btn => {
-        btn.addEventListener('click', closeAuthModal);
-      });
+      document.querySelectorAll('.btn-close-auth').forEach(b => b.addEventListener('click', () => document.getElementById('auth-modal').classList.add('hidden')));
 
-      // Edit dialog dismiss buttons
-      const closeEditBtns = document.querySelectorAll('.btn-close-edit');
-      closeEditBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.getElementById('edit-modal').classList.add('hidden');
-        });
-      });
+      document.getElementById('btn-open-upload').addEventListener('click', () => document.getElementById('upload-modal').classList.remove('hidden'));
+      document.getElementById('btn-close-upload').addEventListener('click', () => document.getElementById('upload-modal').classList.add('hidden'));
 
-      // [NEW] Edit Reservation Form Save Submission
-      document.getElementById('edit-form').addEventListener('submit', (e) => {
+      document.getElementById('upload-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const id = document.getElementById('edit-booking-id').value;
-        const date = document.getElementById('edit-booking-date').value;
-        const email = document.getElementById('edit-user-email').value;
-        const phone = document.getElementById('edit-user-phone').value;
-
-        // Find selected edit slot pill
-        const selectedEditPill = document.querySelector('.edit-time-pill[data-selected="true"]');
-        if (!selectedEditPill) {
-          showToast("시간대를 선택하지 않았습니다. 희망하는 코칭 타임을 정해주세요.", "error");
-          return;
-        }
-        const time = selectedEditPill.dataset.time;
-
-        // Save back to memory database
-        const bookingIdx = bookings.findIndex(b => b.id === id);
-        if (bookingIdx !== -1) {
-          bookings[bookingIdx].date = date;
-          bookings[bookingIdx].time = time;
-          bookings[bookingIdx].email = email;
-          bookings[bookingIdx].phone = phone;
-
-          // Push Log
-          pushLog(
-            "EMAIL", 
-            email, 
-            `[코칭 일정 변경 알림] 예약 정보 수정이 완료되었습니다.`, 
-            `안녕하셔요! 수정 요청하셨던 일정이 조율 완료되었습니다.<br>■ 변경된 날짜: ${date}<br>■ 변경된 시간: ${time} ~ ${addMinutes(time, 30)}`
-          );
-
-          // Refresh UI
-          renderCalendar();
-          renderScheduleTable();
-          renderStats();
-
-          document.getElementById('edit-modal').classList.add('hidden');
-          showToast("🎉 코칭 예약 변경사항이 성공적으로 반영되었습니다.", "success");
-        }
-      });
-
-      // [NEW] Custom Confirm Modal handler binding
-      document.getElementById('btn-confirm-ok').addEventListener('click', () => {
-        if (onConfirmSuccess) {
-          onConfirmSuccess();
-        }
-      });
-      document.getElementById('btn-confirm-cancel').addEventListener('click', closeConfirm);
-
-      // Admin Password Change
-      document.getElementById('btn-change-password').addEventListener('click', () => {
-        const newPassword = document.getElementById('admin-new-password').value;
-        const confirmPassword = document.getElementById('admin-new-password-confirm').value;
-
-        if (!newPassword) {
-          showToast("새로 지정할 비밀번호를 먼저 입력해 주세요.", "error");
-          return;
-        }
-
-        if (newPassword !== confirmPassword) {
-          showToast("입력한 두 비밀번호가 서로 일치하지 않습니다. 다시 입력해 주세요.", "error");
-          return;
-        }
-
-        adminPassword = newPassword;
-        document.getElementById('admin-new-password').value = '';
-        document.getElementById('admin-new-password-confirm').value = '';
-
-        updateAdminView();
-        pushLog("SYSTEM", "INTERNAL", "SECURITY_UPDATE", `관리자 패널 비밀번호가 신규 정보로 안전하게 갱신되었습니다.`);
-        showToast("🔑 관리자 비밀번호가 성공적으로 변경되었습니다!", "success");
-      });
-
-      // Date Field Change trigger
-      document.getElementById('booking-date').addEventListener('change', (e) => {
-        triggerDateChange(e.target.value);
-      });
-
-      // Edit Form Date Change trigger
-      document.getElementById('edit-booking-date').addEventListener('change', (e) => {
-        triggerDateChange(e.target.value, true);
-      });
-
-      // User select dynamic stats warning
-      document.getElementById('user-select').addEventListener('change', (e) => {
-        const username = e.target.value;
-        const count = bookings.filter(b => b.user === username).length;
-        const indicator = document.getElementById('user-booking-count');
-        
-        if (count >= 3) {
-          indicator.textContent = `현재 ${count}회 완료 (최대 도달!)`;
-          indicator.className = "text-xs text-rose-500 font-bold";
-        } else {
-          indicator.textContent = `현재 ${count}회 예약됨 (최대 3회 가능)`;
-          indicator.className = "text-xs text-indigo-600 font-medium";
-        }
-      });
-
-      // Client Booking Form Submit
-      document.getElementById('booking-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const user = document.getElementById('user-select').value;
-        const date = document.getElementById('booking-date').value;
-        const email = document.getElementById('user-email').value;
-        const phone = document.getElementById('user-phone').value;
-        const password = document.getElementById('user-booking-pwd').value;
-
-        const selectedPill = document.querySelector('.time-pill[data-selected="true"]');
-        if (!selectedPill) {
-          showToast("시간대를 선택하지 않았습니다. 원하는 시간을 꼭 터치(클릭)해 주세요.", "error");
-          return;
-        }
-        const time = selectedPill.dataset.time;
-
-        const userExistingCount = bookings.filter(b => b.user === user).length;
-        if (userExistingCount >= 3) {
-          showToast(`"${user}"님은 이미 최대치(3회) 코칭 등록이 완료되었습니다.`, "error");
-          return;
-        }
-
-        const isAlreadyBooked = bookings.some(b => b.date === date && b.time === time);
-        if (isAlreadyBooked) {
-          showToast("죄송합니다. 선택하신 시간대는 이미 다른 사람에 의해 예약되었습니다.", "error");
-          return;
-        }
-
-        // Push new booking with user password protect
-        const newBooking = {
-          id: `b_${Date.now()}`,
-          user,
-          date,
-          time,
-          email,
-          phone,
-          password
-        };
-
-        bookings.push(newBooking);
-
-        pushLog(
-          "EMAIL", 
-          email, 
-          `[코칭 확정] ${user}님, 예약 일정이 확정 완료되었습니다.`, 
-          `안녕하셔요, ${user}님! 신청하신 일정이 승인되었습니다. <br>■ 날짜: ${date}<br>■ 시간: ${time} ~ ${addMinutes(time, 30)} (30분간)`
-        );
-
-        renderStats();
-        renderCalendar();
-        renderScheduleTable();
-        
-        showToast(`🎉 ${user}님의 코칭 예약(${date} ${time})이 안전하게 설정되었습니다.`, "success");
-        
-        triggerDateChange(date);
-        
-        // Reset and clean form
-        document.getElementById('user-select').value = "";
-        document.getElementById('user-booking-count').textContent = "";
-        document.getElementById('user-booking-pwd').value = "";
-      });
-
-      // Calendar controls
-      document.getElementById('prev-month').addEventListener('click', () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-          currentMonth = 11;
-          currentYear--;
-        }
-        renderCalendar();
-      });
-
-      document.getElementById('next-month').addEventListener('click', () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-          currentMonth = 0;
-          currentYear++;
-        }
-        renderCalendar();
-      });
-
-      // Schedule Table Filters
-      document.getElementById('filter-user').addEventListener('change', renderScheduleTable);
-      document.getElementById('filter-date').addEventListener('change', renderScheduleTable);
-      document.getElementById('reset-filter').addEventListener('click', () => {
-        document.getElementById('filter-user').value = "";
-        document.getElementById('filter-date').value = "";
-        renderScheduleTable();
-        showToast("필터링 기준이 초기화되었습니다.", "info");
-      });
-
-      // Simulator trigger logs
-      document.getElementById('btn-trigger-notification').addEventListener('click', () => {
-        const id = document.getElementById('trigger-log-select').value;
-        if (!id) {
-          showToast("알림 테스트를 보낼 대상을 먼저 선택해 주세요.", "error");
-          return;
-        }
-
-        const b = bookings.find(item => item.id === id);
-        if (!b) return;
-
-        pushLog(
-          "EMAIL", 
-          b.email, 
-          `[리마인더] 코칭 세션 1시간 전 안내 리마인드`, 
-          `안녕하세요 ${b.user}님! 곧이어 오늘 예약된 [${b.time}] 코칭 세션이 시작됩니다.`
-        );
-
-        showToast(`📣 ${b.user}님께 알림 리마인더 메일을 모의 송신했습니다.`, "success");
-      });
-
-      // Clear Log Console
-      document.getElementById('btn-clear-logs').addEventListener('click', () => {
-        notificationLogs = [];
-        renderLogs();
-        showToast("콘솔 로그가 초기화되었습니다.");
-      });
-
-      // Upload photos logic
-      const modal = document.getElementById('upload-modal');
-      document.getElementById('btn-open-upload').addEventListener('click', () => {
-        modal.classList.remove('hidden');
-      });
-      document.getElementById('btn-close-upload').addEventListener('click', () => {
-        modal.classList.add('hidden');
-      });
-
-      document.getElementById('upload-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const author = document.getElementById('upload-author').value;
-        const date = document.getElementById('upload-date').value;
-        const desc = document.getElementById('upload-desc').value;
-        const presetKey = document.querySelector('input[name="photoPreset"]:checked').value;
-
-        const newGallery = {
+        const item = {
           id: `g_${Date.now()}`,
-          author,
-          date,
-          presetKey,
-          desc
+          author: document.getElementById('upload-author').value,
+          date: document.getElementById('upload-date').value,
+          desc: document.getElementById('upload-desc').value,
+          presetKey: document.querySelector('input[name="photoPreset"]:checked').value
         };
-
-        galleryList.unshift(newGallery);
-        renderGallery();
-
-        modal.classList.add('hidden');
-        document.getElementById('upload-form').reset();
-        showToast("📷 현장 공유 포스트가 갤러리에 추가되었습니다!", "success");
-      });
-
-      // Admin block dates
-      document.getElementById('btn-add-block').addEventListener('click', () => {
-        const blockDate = document.getElementById('admin-block-date').value;
-        if (!blockDate) {
-          showToast("차단 설정할 날짜를 먼저 선택해 주세요.", "error");
-          return;
-        }
-
-        if (blockedDates.includes(blockDate)) {
-          showToast("해당 날짜는 이미 예약이 차단되어 있습니다.", "error");
-          return;
-        }
-
-        const conflicts = bookings.filter(b => b.date === blockDate);
-        if (conflicts.length > 0) {
-          const userNames = conflicts.map(c => c.user).join(', ');
-          
-          openConfirm(
-            "⚠️ 예약 충돌 감지", 
-            `선택하신 날짜(${blockDate})에 이미 [${conflicts.length}건]의 코칭 예약(${userNames})이 존재합니다. 차단 강제 시 이 예약들은 일괄 자동 취소 및 재예약 요청 메일이 가상 발송됩니다. 진행하시겠습니까?`, 
-            () => {
-              conflicts.forEach(bObj => {
-                pushLog(
-                  "EMAIL", 
-                  bObj.email, 
-                  `⚠️ [긴급 일정 변경 공지] 코칭 세션 일정 취소 및 재예약 안내`, 
-                  `${bObj.user}님 안녕하십니까. 부득이하게 예약해 주셨던 ${bObj.date} ${bObj.time} 일정이 취소되었습니다. 대단히 죄송하며, 다른 평일 시간대로 재예약을 부탁드립니다.`
-                );
-              });
-
-              bookings = bookings.filter(b => b.date !== blockDate);
-              blockedDates.push(blockDate);
-              
-              renderBlockedDatesList();
-              renderStats();
-              renderCalendar();
-              renderScheduleTable();
-              closeConfirm();
-              showToast(`🔒 ${blockDate}에 예약 차단이 적용되었습니다.`, "success");
-            }
-          );
+        if (isFirebaseReady && auth.currentUser) {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'gallery', item.id), item);
         } else {
-          blockedDates.push(blockDate);
-          renderBlockedDatesList();
-          renderStats();
-          renderCalendar();
-          renderScheduleTable();
-          showToast(`🔒 ${blockDate}에 예약 차단이 적용되었습니다.`, "success");
+          galleryList.unshift(item); renderGallery();
         }
-
-        document.getElementById('admin-block-date').value = "";
+        document.getElementById('upload-modal').classList.add('hidden');
+        showToast("공유 공간에 업로드 완료");
       });
     }
+
+    window.authenticateAction = authenticateAction;
+    initAuthAndSync();
   </script>
 </body>
 </html>
